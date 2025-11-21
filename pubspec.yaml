@@ -1,0 +1,88 @@
+name: clone_social
+description: A Facebook clone built with Flutter and Firebase Realtime Database
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Icons
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  image_picker: ^1.0.4
+  photo_view: ^0.14.0
+  
+  # Firebase
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.19.0
+  firebase_database: ^10.5.0
+  firebase_storage: ^11.7.0
+  firebase_messaging: ^14.9.0
+  google_sign_in: ^6.2.1
+  
+  # State Management
+  provider: ^6.1.2
+  flutter_riverpod: ^2.5.1
+  
+  # Navigation
+  go_router: ^14.2.7
+  
+  # Utilities
+  intl: ^0.19.0
+  timeago: ^3.7.0
+  uuid: ^4.5.1
+  shared_preferences: ^2.3.2
+  connectivity_plus: ^6.0.5
+  
+  # Validation
+  email_validator: ^2.1.17
+  
+  # Animations
+  lottie: ^3.1.2
+  shimmer: ^3.0.0
+  
+  # Video
+  video_player: ^2.9.1
+  
+  # Chat
+  emoji_picker_flutter: ^1.6.4
+  flutter_chat_bubble: ^2.0.2
+  
+  # Image Processing
+  # image_cropper: ^4.0.0
+  
+  # Notifications
+  flutter_local_notifications: ^17.2.2
+  
+  # HTTP & Network
+  http: ^1.1.2
+  dio: ^5.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  mockito: ^5.4.4
+  build_runner: ^2.4.7
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    - assets/animations/
+
+  # fonts:
+  #   - family: CustomFont
+  #     fonts:
+  #       - asset: assets/fonts/CustomFont-Regular.ttf
+  #       - asset: assets/fonts/CustomFont-Bold.ttf
+  #         weight: 700
