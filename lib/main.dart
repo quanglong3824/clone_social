@@ -10,6 +10,7 @@ import 'features/friend/presentation/providers/friend_provider.dart';
 import 'features/chat/presentation/providers/chat_provider.dart';
 import 'features/profile/presentation/providers/profile_provider.dart';
 import 'features/notification/presentation/providers/notification_provider.dart';
+import 'features/story/presentation/providers/story_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => StoryProvider()),
       ],
       child: Builder(
         builder: (context) {

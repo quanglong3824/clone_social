@@ -1,56 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:clone_social/features/post/domain/entities/post_entity.dart';
-import 'package:clone_social/features/post/domain/entities/comment_entity.dart';
 import 'package:clone_social/features/post/presentation/providers/post_provider.dart';
-import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
-import 'package:clone_social/core/themes/app_theme.dart';
 import 'package:clone_social/features/post/presentation/widgets/post_item.dart';
+import 'package:clone_social/features/post/presentation/widgets/comment_section.dart';
 
-class PostDetailPage extends StatefulWidget {
+class PostDetailPage extends StatelessWidget {
   final String postId;
 
   const PostDetailPage({super.key, required this.postId});
-
-  @override
-  State<PostDetailPage> createState() => _PostDetailPageState();
-}
-
-class _PostDetailPageState extends State<PostDetailPage> {
-  final _commentController = TextEditingController();
-  bool _isSubmitting = false;
-
-  @override
-  void dispose() {
-    _commentController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submitComment() async {
-    if (_commentController.text.trim().isEmpty) return;
-
-    final currentUser = context.read<AuthProvider>().currentUser;
-    if (currentUser == null) return;
-
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    await context.read<PostProvider>().addComment(
-      widget.postId,
-      currentUser.id,
-      _commentController.text.trim(),
-    );
-
-    if (mounted) {
-      setState(() {
-        _isSubmitting = false;
-        _commentController.clear();
-      });
-      FocusScope.of(context).unfocus();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +17,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
     // Find the post in the provider's list
     PostEntity? post;
     try {
-      post = postProvider.posts.firstWhere((p) => p.id == widget.postId);
+      post = postProvider.posts.firstWhere((p) => p.id == postId);
     } catch (e) {
       // Post might not be loaded yet or deleted
       post = null;
@@ -80,97 +38,98 @@ class _PostDetailPageState extends State<PostDetailPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  PostItem(post: post),
+                  PostItem(post: post, showFullContent: true),
                   const Divider(),
-                  _buildCommentsList(post),
+                  _CommentsListOnly(postId: postId),
                 ],
               ),
             ),
           ),
-          _buildCommentInput(),
+          _CommentInputOnly(postId: postId),
         ],
       ),
     );
   }
+}
 
-  Widget _buildCommentsList(PostEntity post) {
-    // Note: In a real app, we would fetch comments separately or have them in the post entity
-    // For this implementation, we'll assume we need to fetch them or they are not yet implemented in the entity fully
-    // The current PostEntity doesn't have a list of CommentEntities, just a count.
-    // We need to update PostRepository to fetch comments or listen to them.
-    // For now, let's assume we'll add a stream listener for comments here or in the provider.
-    
-    // Since we haven't implemented fetching comments in the provider yet, 
-    // we'll show a placeholder or implement a simple stream builder here.
-    
-    return StreamBuilder(
-      stream: context.read<PostProvider>().getComments(post.id),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        
-        if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('No comments yet. Be the first to comment!'),
-          );
-        }
+/// Widget that only shows the comments list without input
+class _CommentsListOnly extends StatelessWidget {
+  final String postId;
 
-        final comments = snapshot.data as List<CommentEntity>;
-        
-        return ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: comments.length,
-          itemBuilder: (context, index) {
-            final comment = comments[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: comment.userProfileImage != null
-                    ? NetworkImage(comment.userProfileImage!)
-                    : null,
-                child: comment.userProfileImage == null
-                    ? const Icon(Icons.person, size: 20)
-                    : null,
-                radius: 16,
-              ),
-              title: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      comment.userName,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                    ),
-                    Text(comment.text),
-                  ],
-                ),
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-                child: Text(
-                  timeago.format(comment.createdAt),
-                  style: TextStyle(color: Colors.grey[600], fontSize: 11),
-                ),
-              ),
-            );
-          },
-        );
-      },
+  const _CommentsListOnly({required this.postId});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommentSection(
+      postId: postId,
+      showInput: false,
     );
   }
+}
 
-  Widget _buildCommentInput() {
+/// Widget that only shows the comment input
+class _CommentInputOnly extends StatelessWidget {
+  final String postId;
+
+  const _CommentInputOnly({required this.postId});
+
+  @override
+  Widget build(BuildContext context) {
+    // We need a separate stateful widget for just the input
+    return _CommentInput(postId: postId);
+  }
+}
+
+class _CommentInput extends StatefulWidget {
+  final String postId;
+
+  const _CommentInput({required this.postId});
+
+  @override
+  State<_CommentInput> createState() => _CommentInputState();
+}
+
+class _CommentInputState extends State<_CommentInput> {
+  final _controller = TextEditingController();
+  bool _isSubmitting = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+
+    final authProvider = context.read<AuthProvider>();
+    final currentUser = authProvider.currentUser;
+    if (currentUser == null) return;
+
+    setState(() => _isSubmitting = true);
+
+    try {
+      await context.read<PostProvider>().addComment(
+        widget.postId,
+        currentUser.id,
+        text,
+      );
+      _controller.clear();
+      FocusScope.of(context).unfocus();
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -185,7 +144,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
           children: [
             Expanded(
               child: TextField(
-                controller: _commentController,
+                controller: _controller,
                 decoration: InputDecoration(
                   hintText: 'Write a comment...',
                   border: OutlineInputBorder(
@@ -194,10 +153,15 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                 ),
                 minLines: 1,
                 maxLines: 5,
+                textInputAction: TextInputAction.send,
+                onSubmitted: (_) => _submit(),
               ),
             ),
             const SizedBox(width: 8),
@@ -208,8 +172,8 @@ class _PostDetailPageState extends State<PostDetailPage> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Icon(Icons.send, color: AppTheme.primaryBlue),
-              onPressed: _isSubmitting ? null : _submitComment,
+                  : Icon(Icons.send, color: Theme.of(context).primaryColor),
+              onPressed: _isSubmitting ? null : _submit,
             ),
           ],
         ),
@@ -217,3 +181,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
     );
   }
 }
+
+// Import for AuthProvider
+import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';

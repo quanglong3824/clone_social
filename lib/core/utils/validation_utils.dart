@@ -1,12 +1,23 @@
-import 'package:email_validator/email_validator.dart';
-
 class ValidationUtils {
-  // Email validation
+  // Email regex pattern for validation
+  static final RegExp _emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+
+  /// Validates email format using regex pattern.
+  /// Returns true if email is valid, false otherwise.
+  static bool isValidEmail(String email) {
+    if (email.isEmpty) return false;
+    return _emailRegex.hasMatch(email);
+  }
+
+  /// Email validation for form fields.
+  /// Returns error message for invalid emails, null for valid emails.
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';
     }
-    if (!EmailValidator.validate(value)) {
+    if (!isValidEmail(value)) {
       return 'Please enter a valid email';
     }
     return null;

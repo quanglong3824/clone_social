@@ -24,9 +24,13 @@ class FirebaseService {
   DatabaseReference commentRef(String postId, String commentId) => 
       commentsRef(postId).child(commentId);
 
-  // Likes
+  // Likes (deprecated - use reactionsRef)
   DatabaseReference likesRef(String postId) => 
       postRef(postId).child('likes');
+
+  // Reactions
+  DatabaseReference reactionsRef(String postId) => 
+      postRef(postId).child('reactions');
 
   // Friend Requests
   DatabaseReference friendRequestsRef() => database.child('friendRequests');
@@ -53,6 +57,12 @@ class FirebaseService {
   DatabaseReference notificationsRef() => database.child('notifications');
   DatabaseReference userNotificationsRef(String userId) => 
       notificationsRef().child(userId);
+
+  // Stories
+  DatabaseReference storiesRef() => database.child('stories');
+  DatabaseReference storyRef(String storyId) => storiesRef().child(storyId);
+  DatabaseReference storyViewersRef(String storyId) => 
+      storyRef(storyId).child('viewerIds');
 
   // Helper methods
   String generateKey(DatabaseReference ref) {

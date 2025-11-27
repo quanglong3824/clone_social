@@ -7,8 +7,14 @@ abstract class PostRepository {
   Stream<List<PostEntity>> getUserPosts(String userId);
   Future<void> createPost(String content, {List<File>? images, File? video});
   Future<void> deletePost(String postId);
+  /// @deprecated Use addReaction instead
   Future<void> likePost(String postId, String userId);
+  /// @deprecated Use removeReaction instead
   Future<void> unlikePost(String postId, String userId);
+  /// Add a reaction to a post
+  Future<void> addReaction(String postId, String userId, String reactionType);
+  /// Remove a reaction from a post
+  Future<void> removeReaction(String postId, String userId);
   Future<void> addComment(String postId, String userId, String text);
   Future<void> deleteComment(String postId, String commentId);
   Future<void> sharePost(String postId, String userId);

@@ -16,14 +16,53 @@ class AppTheme {
   static const Color textPrimary = Color(0xFF050505);
   static const Color textSecondary = Color(0xFF65676B);
   static const Color textDark = Color(0xFFE4E6EB);
+  static const Color textSecondaryDark = Color(0xFFB0B3B8);
   
   static const Color dividerLight = Color(0xFFCED0D4);
   static const Color dividerDark = Color(0xFF3E4042);
   
-  // Success, Warning, Error
+  // Semantic Colors
   static const Color success = Color(0xFF42B72A);
+  static const Color successLight = Color(0xFFE8F5E9);
+  static const Color successDark = Color(0xFF2E7D32);
+  
   static const Color warning = Color(0xFFF7B928);
+  static const Color warningLight = Color(0xFFFFF8E1);
+  static const Color warningDark = Color(0xFFF57C00);
+  
   static const Color error = Color(0xFFFA383E);
+  static const Color errorLight = Color(0xFFFFEBEE);
+  static const Color errorDark = Color(0xFFC62828);
+  
+  static const Color info = Color(0xFF1877F2);
+  static const Color infoLight = Color(0xFFE3F2FD);
+  static const Color infoDark = Color(0xFF1565C0);
+  
+  // Spacing Constants
+  static const double spacingXxs = 2.0;
+  static const double spacingXs = 4.0;
+  static const double spacingSm = 8.0;
+  static const double spacingMd = 12.0;
+  static const double spacingLg = 16.0;
+  static const double spacingXl = 20.0;
+  static const double spacingXxl = 24.0;
+  static const double spacing3xl = 32.0;
+  static const double spacing4xl = 40.0;
+  static const double spacing5xl = 48.0;
+  
+  // Border Radius Constants
+  static const double radiusXs = 4.0;
+  static const double radiusSm = 8.0;
+  static const double radiusMd = 12.0;
+  static const double radiusLg = 16.0;
+  static const double radiusXl = 20.0;
+  static const double radiusFull = 999.0;
+  
+  // Icon Sizes
+  static const double iconSm = 16.0;
+  static const double iconMd = 20.0;
+  static const double iconLg = 24.0;
+  static const double iconXl = 32.0;
   
   // Light Theme
   static ThemeData lightTheme = ThemeData(
@@ -72,7 +111,7 @@ class AppTheme {
       ),
     ),
     
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: surfaceLight,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -166,7 +205,7 @@ class AppTheme {
       ),
     ),
     
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: surfaceDark,
       elevation: 0,
       shape: RoundedRectangleBorder(

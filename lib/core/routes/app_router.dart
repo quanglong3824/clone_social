@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../widgets/main_layout.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/splash_page.dart';
+import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/post/presentation/pages/home_page.dart';
 import '../../features/post/presentation/pages/create_post_page.dart';
@@ -18,6 +18,8 @@ import '../../features/notification/presentation/pages/notification_page.dart';
 import '../../features/watch/presentation/pages/watch_page.dart';
 import '../../features/marketplace/presentation/pages/marketplace_page.dart';
 import '../../features/menu/presentation/pages/menu_page.dart';
+import '../../features/story/presentation/pages/story_viewer_page.dart';
+import '../../features/story/presentation/pages/create_story_page.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthProvider authProvider) {
@@ -53,9 +55,7 @@ class AppRouter {
       GoRoute(
         path: '/splash',
         name: 'splash',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        builder: (context, state) => const SplashPage(),
       ),
       GoRoute(
         path: '/login',
@@ -70,9 +70,7 @@ class AppRouter {
       GoRoute(
         path: '/forgot-password',
         name: 'forgot-password',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Forgot Password Page')),
-        ),
+        builder: (context, state) => const ForgotPasswordPage(),
       ),
       
       // Main App Routes with Bottom Navigation
@@ -169,6 +167,20 @@ class AppRouter {
         builder: (context, state) {
           final postId = state.pathParameters['postId']!;
           return PostDetailPage(postId: postId);
+        },
+      ),
+      // Story Routes
+      GoRoute(
+        path: '/create-story',
+        name: 'create-story',
+        builder: (context, state) => const CreateStoryPage(),
+      ),
+      GoRoute(
+        path: '/story-viewer/:userId',
+        name: 'story-viewer',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return StoryViewerPage(userId: userId);
         },
       ),
     ],

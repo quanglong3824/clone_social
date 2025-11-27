@@ -109,7 +109,18 @@ class PostRepositoryImpl implements PostRepository {
 
   @override
   Future<void> likePost(String postId, String userId) async {
-    await _firebaseService.likesRef(postId).child(userId).set(true);
+    // Default to 'like' reaction for backward compatibility
+    await addReaction(postId, userId, 'like');
+  }
+
+  @override
+  Future<void> unlikePost(String postId, String userId) async {
+    await removeReaction(postId, userId);
+  }
+
+  /// Add a reaction to a post
+  Future<void> addReaction(String postId, String userId, String reactionType) async {
+    await _firebaseService.reactionsRef(postId).child(userId).set(reactionType);
     
     // Send notification
     final postSnapshot = await _firebaseService.postRef(postId).get();
@@ -118,7 +129,8 @@ class PostRepositoryImpl implements PostRepository {
       if (post['userId'] != userId) {
         final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
         await _firebaseService.userNotificationsRef(post['userId']).child(notifId).set({
-          'type': 'like',
+          'type': 'reaction',
+          'reactionType': reactionType,
           'fromUserId': userId,
           'postId': postId,
           'read': false,
@@ -128,9 +140,9 @@ class PostRepositoryImpl implements PostRepository {
     }
   }
 
-  @override
-  Future<void> unlikePost(String postId, String userId) async {
-    await _firebaseService.likesRef(postId).child(userId).remove();
+  /// Remove a reaction from a post
+  Future<void> removeReaction(String postId, String userId) async {
+    await _firebaseService.reactionsRef(postId).child(userId).remove();
   }
 
   @override
@@ -231,6 +243,16 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   PostEntity _mapToPostEntity(String id, Map<String, dynamic> data) {
+    // Handle both old 'likes' format and new 'reactions' format
+    Map<String, String> reactions = {};
+    if (data['reactions'] != null) {
+      reactions = Map<String, String>.from(data['reactions']);
+    } else if (data['likes'] != null) {
+      // Convert old likes format to reactions format
+      final likes = Map<String, dynamic>.from(data['likes']);
+      reactions = likes.map((key, value) => MapEntry(key, 'like'));
+    }
+    
     return PostEntity(
       id: id,
       userId: data['userId'] ?? '',
@@ -239,7 +261,7 @@ class PostRepositoryImpl implements PostRepository {
       content: data['content'] ?? '',
       images: data['images'] != null ? List<String>.from(data['images']) : [],
       videoUrl: data['videoUrl'],
-      likes: data['likes'] != null ? Map<String, bool>.from(data['likes']) : {},
+      reactions: reactions,
       commentCount: data['commentCount'] ?? 0,
       shareCount: data['shareCount'] ?? 0,
       createdAt: DateTime.fromMillisecondsSinceEpoch(data['createdAt'] ?? 0),

@@ -43,21 +43,88 @@ class PostProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> likePost(String postId, String userId) async {
+  /// Add a reaction to a post with optimistic update
+  Future<void> addReaction(String postId, String userId, ReactionType reaction) async {
+    // Optimistic update
+    final postIndex = _posts.indexWhere((p) => p.id == postId);
+    if (postIndex != -1) {
+      final post = _posts[postIndex];
+      final updatedReactions = Map<String, String>.from(post.reactions);
+      updatedReactions[userId] = reaction.name;
+      _posts[postIndex] = post.copyWith(reactions: updatedReactions);
+      notifyListeners();
+    }
+
     try {
-      await _postRepository.likePost(postId, userId);
+      await _postRepository.addReaction(postId, userId, reaction.name);
     } catch (e) {
-      // Optimistic update failed, handle error if needed
-      print('Error liking post: $e');
+      // Rollback on error
+      if (postIndex != -1) {
+        final post = _posts[postIndex];
+        final updatedReactions = Map<String, String>.from(post.reactions);
+        updatedReactions.remove(userId);
+        _posts[postIndex] = post.copyWith(reactions: updatedReactions);
+        notifyListeners();
+      }
+      debugPrint('Error adding reaction: $e');
     }
   }
 
-  Future<void> unlikePost(String postId, String userId) async {
-    try {
-      await _postRepository.unlikePost(postId, userId);
-    } catch (e) {
-      print('Error unliking post: $e');
+  /// Remove a reaction from a post with optimistic update
+  Future<void> removeReaction(String postId, String userId) async {
+    // Store previous state for rollback
+    final postIndex = _posts.indexWhere((p) => p.id == postId);
+    String? previousReaction;
+    
+    if (postIndex != -1) {
+      final post = _posts[postIndex];
+      previousReaction = post.reactions[userId];
+      final updatedReactions = Map<String, String>.from(post.reactions);
+      updatedReactions.remove(userId);
+      _posts[postIndex] = post.copyWith(reactions: updatedReactions);
+      notifyListeners();
     }
+
+    try {
+      await _postRepository.removeReaction(postId, userId);
+    } catch (e) {
+      // Rollback on error
+      if (postIndex != -1 && previousReaction != null) {
+        final post = _posts[postIndex];
+        final updatedReactions = Map<String, String>.from(post.reactions);
+        updatedReactions[userId] = previousReaction;
+        _posts[postIndex] = post.copyWith(reactions: updatedReactions);
+        notifyListeners();
+      }
+      debugPrint('Error removing reaction: $e');
+    }
+  }
+
+  /// Toggle reaction - if same reaction exists, remove it; otherwise add/change it
+  Future<void> toggleReaction(String postId, String userId, ReactionType reaction) async {
+    final postIndex = _posts.indexWhere((p) => p.id == postId);
+    if (postIndex == -1) return;
+
+    final post = _posts[postIndex];
+    final currentReaction = post.getReactionBy(userId);
+
+    if (currentReaction == reaction) {
+      // Same reaction - remove it
+      await removeReaction(postId, userId);
+    } else {
+      // Different or no reaction - add/change it
+      await addReaction(postId, userId, reaction);
+    }
+  }
+
+  /// @deprecated Use addReaction instead
+  Future<void> likePost(String postId, String userId) async {
+    await addReaction(postId, userId, ReactionType.like);
+  }
+
+  /// @deprecated Use removeReaction instead
+  Future<void> unlikePost(String postId, String userId) async {
+    await removeReaction(postId, userId);
   }
 
   Future<void> addComment(String postId, String userId, String text) async {
