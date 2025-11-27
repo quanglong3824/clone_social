@@ -111,7 +111,7 @@
     - Grid layout cho 1-4 ảnh
     - Hiển thị "+X" indicator khi > 4 ảnh
     - _Requirements: 4.1_
-  - [-] 7.3 Write property test cho PostImageGrid layout
+  - [ ] 7.3 Write property test cho PostImageGrid layout
     - **Property 3: Post Image Grid Layout**
     - **Validates: Requirements 4.1**
   - [x] 7.4 Implement ReactionPicker widget
