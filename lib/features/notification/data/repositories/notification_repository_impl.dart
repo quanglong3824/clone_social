@@ -60,12 +60,88 @@ class NotificationRepositoryImpl implements NotificationRepository {
       userId: userId,
       type: data['type'] ?? 'unknown',
       fromUserId: data['fromUserId'] ?? '',
-      fromUserName: data['fromUserName'] ?? 'Someone', // Note: Ideally fetch user name
+      fromUserName: data['fromUserName'] ?? 'Someone',
       fromUserProfileImage: data['fromUserProfileImage'],
       postId: data['postId'],
       message: data['message'],
       read: data['read'] ?? false,
       createdAt: DateTime.fromMillisecondsSinceEpoch(data['createdAt'] ?? 0),
     );
+  }
+
+  @override
+  Stream<List<NotificationEntity>> getNotificationsWithUserInfo(String userId) {
+    return _firebaseService.userNotificationsRef(userId).onValue.asyncMap((event) async {
+      final notifications = <NotificationEntity>[];
+      if (event.snapshot.value != null) {
+        final data = Map<String, dynamic>.from(event.snapshot.value as Map);
+        
+        for (var entry in data.entries) {
+          final notifData = Map<String, dynamic>.from(entry.value);
+          final fromUserId = notifData['fromUserId'] ?? '';
+          
+          // Fetch user info if not present
+          String fromUserName = notifData['fromUserName'] ?? '';
+          String? fromUserProfileImage = notifData['fromUserProfileImage'];
+          
+          if (fromUserName.isEmpty && fromUserId.isNotEmpty) {
+            final userSnapshot = await _firebaseService.userRef(fromUserId).get();
+            if (userSnapshot.exists && userSnapshot.value != null) {
+              final userData = Map<String, dynamic>.from(userSnapshot.value as Map);
+              fromUserName = userData['name'] ?? 'Someone';
+              fromUserProfileImage = userData['profileImage'];
+            }
+          }
+          
+          notifications.add(NotificationEntity(
+            id: entry.key,
+            userId: userId,
+            type: notifData['type'] ?? 'unknown',
+            fromUserId: fromUserId,
+            fromUserName: fromUserName.isEmpty ? 'Someone' : fromUserName,
+            fromUserProfileImage: fromUserProfileImage,
+            postId: notifData['postId'],
+            message: notifData['message'],
+            read: notifData['read'] ?? false,
+            createdAt: DateTime.fromMillisecondsSinceEpoch(notifData['createdAt'] ?? 0),
+          ));
+        }
+      }
+      // Sort by newest first
+      notifications.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return notifications;
+    });
+  }
+
+  /// Create a notification with full user info
+  Future<void> createNotification({
+    required String toUserId,
+    required String fromUserId,
+    required String type,
+    String? postId,
+    String? message,
+  }) async {
+    // Get sender info
+    final senderSnapshot = await _firebaseService.userRef(fromUserId).get();
+    String fromUserName = 'Someone';
+    String? fromUserProfileImage;
+    
+    if (senderSnapshot.exists && senderSnapshot.value != null) {
+      final senderData = Map<String, dynamic>.from(senderSnapshot.value as Map);
+      fromUserName = senderData['name'] ?? 'Someone';
+      fromUserProfileImage = senderData['profileImage'];
+    }
+
+    final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
+    await _firebaseService.userNotificationsRef(toUserId).child(notifId).set({
+      'type': type,
+      'fromUserId': fromUserId,
+      'fromUserName': fromUserName,
+      'fromUserProfileImage': fromUserProfileImage,
+      'postId': postId,
+      'message': message,
+      'read': false,
+      'createdAt': ServerValue.timestamp,
+    });
   }
 }

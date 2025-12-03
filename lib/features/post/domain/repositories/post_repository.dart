@@ -19,4 +19,17 @@ abstract class PostRepository {
   Future<void> deleteComment(String postId, String commentId);
   Future<void> sharePost(String postId, String userId);
   Stream<List<CommentEntity>> getComments(String postId);
+  
+  /// Like a comment
+  Future<void> likeComment(String postId, String commentId, String userId);
+  /// Unlike a comment
+  Future<void> unlikeComment(String postId, String commentId, String userId);
+  /// Reply to a comment
+  Future<void> replyToComment(String postId, String commentId, String userId, String text);
+  /// Get replies for a comment
+  Stream<List<CommentEntity>> getCommentReplies(String postId, String commentId);
+  /// Share post to feed with optional text
+  Future<void> sharePostToFeed(String postId, String userId, {String? text});
+  /// Get list of users who reacted to a post
+  Future<List<Map<String, dynamic>>> getPostReactions(String postId);
 }

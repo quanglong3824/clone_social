@@ -139,6 +139,60 @@ class PostProvider extends ChangeNotifier {
     return _postRepository.getComments(postId);
   }
 
+  /// Like a comment
+  Future<void> likeComment(String postId, String commentId, String userId) async {
+    try {
+      await _postRepository.likeComment(postId, commentId, userId);
+    } catch (e) {
+      debugPrint('Error liking comment: $e');
+    }
+  }
+
+  /// Unlike a comment
+  Future<void> unlikeComment(String postId, String commentId, String userId) async {
+    try {
+      await _postRepository.unlikeComment(postId, commentId, userId);
+    } catch (e) {
+      debugPrint('Error unliking comment: $e');
+    }
+  }
+
+  /// Reply to a comment
+  Future<void> replyToComment(String postId, String commentId, String userId, String text) async {
+    try {
+      await _postRepository.replyToComment(postId, commentId, userId, text);
+    } catch (e) {
+      _setError(e.toString());
+      rethrow;
+    }
+  }
+
+  /// Get replies for a comment
+  Stream<List<CommentEntity>> getCommentReplies(String postId, String commentId) {
+    return _postRepository.getCommentReplies(postId, commentId);
+  }
+
+  /// Share post to feed
+  Future<bool> sharePostToFeed(String postId, String userId, {String? text}) async {
+    try {
+      await _postRepository.sharePostToFeed(postId, userId, text: text);
+      return true;
+    } catch (e) {
+      _setError(e.toString());
+      return false;
+    }
+  }
+
+  /// Get list of users who reacted to a post
+  Future<List<Map<String, dynamic>>> getPostReactions(String postId) async {
+    try {
+      return await _postRepository.getPostReactions(postId);
+    } catch (e) {
+      debugPrint('Error getting reactions: $e');
+      return [];
+    }
+  }
+
   void _setLoading(bool value) {
     _isLoading = value;
     _error = null;

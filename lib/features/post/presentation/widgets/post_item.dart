@@ -81,19 +81,88 @@ class PostItem extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    if (post.content.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (post.content.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              post.content,
+              maxLines: showFullContent ? null : 5,
+              overflow: showFullContent ? null : TextOverflow.ellipsis,
+            ),
+          ),
+        // Show shared post content
+        if (post.isSharedPost) _buildSharedPost(context),
+      ],
+    );
+  }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Text(
-        post.content,
-        maxLines: showFullContent ? null : 5,
-        overflow: showFullContent ? null : TextOverflow.ellipsis,
+  Widget _buildSharedPost(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Shared post header
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            leading: GestureDetector(
+              onTap: () => context.push('/profile/${post.sharedPostUserId}'),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundImage: post.sharedPostUserProfileImage != null
+                    ? NetworkImage(post.sharedPostUserProfileImage!)
+                    : null,
+                backgroundColor: Colors.grey[300],
+                child: post.sharedPostUserProfileImage == null
+                    ? const Icon(Icons.person, size: 18, color: Colors.white)
+                    : null,
+              ),
+            ),
+            title: GestureDetector(
+              onTap: () => context.push('/profile/${post.sharedPostUserId}'),
+              child: Text(
+                post.sharedPostUserName ?? 'Unknown',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+            ),
+          ),
+          // Shared post content
+          if (post.sharedPostContent != null && post.sharedPostContent!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              child: Text(
+                post.sharedPostContent!,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          // Shared post images
+          if (post.sharedPostImages != null && post.sharedPostImages!.isNotEmpty)
+            PostImageGrid(
+              images: post.sharedPostImages!,
+              height: 200,
+              onImageTap: (index) {
+                if (post.sharedPostId != null) {
+                  context.push('/post/${post.sharedPostId}');
+                }
+              },
+            ),
+        ],
       ),
     );
   }
 
   Widget _buildImages(BuildContext context) {
+    // Don't show images if this is a shared post (images are in shared content)
+    if (post.isSharedPost) return const SizedBox.shrink();
+    
     return PostImageGrid(
       images: post.images,
       height: 300,
@@ -111,47 +180,50 @@ class PostItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
         children: [
-          // Reaction icons
-          if (topReactions.isNotEmpty) ...[
-            Row(
+          // Reaction icons - tappable to show list
+          GestureDetector(
+            onTap: post.reactionCount > 0 ? () => _showReactionsDialog(context) : null,
+            child: Row(
               children: [
-                ...topReactions.take(3).map((reaction) => Container(
-                  margin: const EdgeInsets.only(right: 2),
-                  child: Text(
-                    reaction.emoji,
-                    style: const TextStyle(fontSize: 16),
+                if (topReactions.isNotEmpty) ...[
+                  ...topReactions.take(3).map((reaction) => Container(
+                    margin: const EdgeInsets.only(right: 2),
+                    child: Text(
+                      reaction.emoji,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  )),
+                ] else if (post.reactionCount > 0) ...[
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: AppTheme.primaryBlue,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.thumb_up, size: 10, color: Colors.white),
                   ),
-                )),
-                const SizedBox(width: 4),
-                Text(
-                  '${post.reactionCount}',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
+                ],
+                if (post.reactionCount > 0) ...[
+                  const SizedBox(width: 4),
+                  Text(
+                    '${post.reactionCount}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ],
               ],
             ),
-          ] else ...[
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(
-                color: AppTheme.primaryBlue,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.thumb_up, size: 10, color: Colors.white),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              '${post.reactionCount}',
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () => context.push('/post/${post.id}'),
+            child: Text(
+              '${post.commentCount} bình luận',
               style: TextStyle(color: Colors.grey[600]),
             ),
-          ],
-          const Spacer(),
-          Text(
-            '${post.commentCount} comments',
-            style: TextStyle(color: Colors.grey[600]),
           ),
           const SizedBox(width: 8),
           Text(
-            '${post.shareCount} shares',
+            '${post.shareCount} chia sẻ',
             style: TextStyle(color: Colors.grey[600]),
           ),
         ],
@@ -250,28 +322,115 @@ class PostItem extends StatelessWidget {
     if (option != null && context.mounted) {
       switch (option) {
         case ShareOption.shareToFeed:
-          // TODO: Implement share to feed
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Share to Feed coming soon')),
-          );
+          // Handled in ShareBottomSheet
           break;
         case ShareOption.shareToStory:
-          // TODO: Implement share to story
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Share to Story coming soon')),
+            const SnackBar(content: Text('Chia sẻ lên Story sẽ sớm có')),
           );
           break;
         case ShareOption.copyLink:
           // Already handled in ShareBottomSheet
           break;
         case ShareOption.more:
-          // TODO: Implement native share
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('More options coming soon')),
+            const SnackBar(content: Text('Thêm tùy chọn sẽ sớm có')),
           );
           break;
       }
     }
+  }
+
+  void _showReactionsDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => _ReactionsListSheet(postId: post.id),
+    );
+  }
+}
+
+/// Bottom sheet showing list of users who reacted
+class _ReactionsListSheet extends StatelessWidget {
+  final String postId;
+
+  const _ReactionsListSheet({required this.postId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
+      ),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Cảm xúc',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const Divider(height: 1),
+          Expanded(
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: context.read<PostProvider>().getPostReactions(postId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final reactions = snapshot.data ?? [];
+                if (reactions.isEmpty) {
+                  return const Center(child: Text('Chưa có cảm xúc nào'));
+                }
+
+                return ListView.builder(
+                  itemCount: reactions.length,
+                  itemBuilder: (context, index) {
+                    final reaction = reactions[index];
+                    final reactionType = ReactionType.fromString(reaction['reactionType']);
+                    
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: reaction['userProfileImage'] != null
+                            ? NetworkImage(reaction['userProfileImage'])
+                            : null,
+                        backgroundColor: Colors.grey[300],
+                        child: reaction['userProfileImage'] == null
+                            ? const Icon(Icons.person, color: Colors.white)
+                            : null,
+                      ),
+                      title: Text(reaction['userName'] ?? 'Unknown'),
+                      trailing: Text(
+                        reactionType?.emoji ?? '👍',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        context.push('/profile/${reaction['userId']}');
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

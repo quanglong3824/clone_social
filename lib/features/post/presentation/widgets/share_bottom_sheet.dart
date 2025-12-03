@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:clone_social/features/post/presentation/providers/post_provider.dart';
+import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 
 /// Share options available in the bottom sheet
 enum ShareOption {
@@ -58,6 +61,7 @@ class ShareBottomSheet extends StatelessWidget {
     return showModalBottomSheet<ShareOption>(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (context) => ShareBottomSheet(
         postId: postId,
         postUrl: postUrl,
@@ -69,8 +73,27 @@ class ShareBottomSheet extends StatelessWidget {
   void _handleOptionTap(BuildContext context, ShareOption option) {
     if (option == ShareOption.copyLink) {
       _copyLink(context);
+      onOptionSelected?.call(option);
+    } else if (option == ShareOption.shareToFeed) {
+      // Get providers before closing bottom sheet
+      final postProvider = context.read<PostProvider>();
+      final authProvider = context.read<AuthProvider>();
+      Navigator.of(context).pop();
+      _showShareToFeedDialog(context, postProvider, authProvider);
+    } else {
+      onOptionSelected?.call(option);
     }
-    onOptionSelected?.call(option);
+  }
+
+  void _showShareToFeedDialog(BuildContext context, PostProvider postProvider, AuthProvider authProvider) {
+    showDialog(
+      context: context,
+      builder: (ctx) => _ShareToFeedDialog(
+        postId: postId,
+        postProvider: postProvider,
+        authProvider: authProvider,
+      ),
+    );
   }
 
   void _copyLink(BuildContext context) {
@@ -176,6 +199,106 @@ class _ShareOptionTile extends StatelessWidget {
         style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       onTap: onTap,
+    );
+  }
+}
+
+
+/// Dialog for sharing post to feed with optional text
+class _ShareToFeedDialog extends StatefulWidget {
+  final String postId;
+  final PostProvider postProvider;
+  final AuthProvider authProvider;
+
+  const _ShareToFeedDialog({
+    required this.postId,
+    required this.postProvider,
+    required this.authProvider,
+  });
+
+  @override
+  State<_ShareToFeedDialog> createState() => _ShareToFeedDialogState();
+}
+
+class _ShareToFeedDialogState extends State<_ShareToFeedDialog> {
+  final _controller = TextEditingController();
+  bool _isSharing = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _share() async {
+    final currentUser = widget.authProvider.currentUser;
+    if (currentUser == null) return;
+
+    setState(() => _isSharing = true);
+
+    try {
+      final success = await widget.postProvider.sharePostToFeed(
+        widget.postId,
+        currentUser.id,
+        text: _controller.text.trim().isEmpty ? null : _controller.text.trim(),
+      );
+
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(success ? 'Đã chia sẻ bài viết' : 'Không thể chia sẻ'),
+            backgroundColor: success ? AppTheme.success : AppTheme.error,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSharing = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi: $e'), backgroundColor: AppTheme.error),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Chia sẻ lên bảng tin'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+              hintText: 'Viết gì đó về bài viết này...',
+              border: OutlineInputBorder(),
+            ),
+            minLines: 2,
+            maxLines: 4,
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Hủy'),
+        ),
+        ElevatedButton(
+          onPressed: _isSharing ? null : _share,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppTheme.primaryBlue,
+          ),
+          child: _isSharing
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                )
+              : const Text('Chia sẻ'),
+        ),
+      ],
     );
   }
 }

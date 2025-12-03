@@ -88,11 +88,13 @@ class FriendRepositoryImpl implements FriendRepository {
       'createdAt': ServerValue.timestamp,
     });
 
-    // Send notification
+    // Send notification with full user info
     final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
     await _firebaseService.userNotificationsRef(toUserId).child(notifId).set({
       'type': 'friend_request',
       'fromUserId': fromUserId,
+      'fromUserName': senderData['name'],
+      'fromUserProfileImage': senderData['profileImage'],
       'read': false,
       'createdAt': ServerValue.timestamp,
     });
@@ -100,30 +102,125 @@ class FriendRepositoryImpl implements FriendRepository {
 
   @override
   Future<void> acceptFriendRequest(String userId, String requestId, String fromUserId) async {
-    // Update request status
-    await _firebaseService.userFriendRequestsRef(userId).child(requestId).update({
-      'status': 'accepted',
-    });
+    print('FriendRepository: Accepting request $requestId from $fromUserId for user $userId');
+    
+    try {
+      // Update request status
+      await _firebaseService.userFriendRequestsRef(userId).child(requestId).update({
+        'status': 'accepted',
+      });
+      print('FriendRepository: Updated request status to accepted');
 
-    // Add to friends list for both users
-    await _firebaseService.friendsRef(userId).child(fromUserId).set(true);
-    await _firebaseService.friendsRef(fromUserId).child(userId).set(true);
+      // Add to friends list for both users
+      await _firebaseService.friendsRef(userId).child(fromUserId).set(true);
+      await _firebaseService.friendsRef(fromUserId).child(userId).set(true);
+      print('FriendRepository: Added to friends list for both users');
 
-    // Send notification
-    final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
-    await _firebaseService.userNotificationsRef(fromUserId).child(notifId).set({
-      'type': 'friend_accept',
-      'fromUserId': userId,
-      'read': false,
-      'createdAt': ServerValue.timestamp,
-    });
+      // Get accepter info for notification
+      final accepterSnapshot = await _firebaseService.userRef(userId).get();
+      String accepterName = 'Someone';
+      String? accepterProfileImage;
+      
+      if (accepterSnapshot.exists && accepterSnapshot.value != null) {
+        final accepterData = Map<String, dynamic>.from(accepterSnapshot.value as Map);
+        accepterName = accepterData['name'] ?? 'Someone';
+        accepterProfileImage = accepterData['profileImage'];
+      }
+
+      // Send notification with full user info
+      final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
+      await _firebaseService.userNotificationsRef(fromUserId).child(notifId).set({
+        'type': 'friend_accept',
+        'fromUserId': userId,
+        'fromUserName': accepterName,
+        'fromUserProfileImage': accepterProfileImage,
+        'read': false,
+        'createdAt': ServerValue.timestamp,
+      });
+      print('FriendRepository: Sent friend_accept notification');
+    } catch (e) {
+      print('FriendRepository: Error accepting friend request: $e');
+      rethrow;
+    }
   }
 
   @override
   Future<void> rejectFriendRequest(String userId, String requestId) async {
-    await _firebaseService.userFriendRequestsRef(userId).child(requestId).update({
-      'status': 'rejected',
-    });
+    print('FriendRepository: Rejecting request $requestId for user $userId');
+    
+    try {
+      await _firebaseService.userFriendRequestsRef(userId).child(requestId).update({
+        'status': 'rejected',
+      });
+      print('FriendRepository: Updated request status to rejected');
+    } catch (e) {
+      print('FriendRepository: Error rejecting friend request: $e');
+      rethrow;
+    }
+  }
+
+  /// Accept friend request by fromUserId (find request automatically)
+  Future<void> acceptFriendRequestByUserId(String userId, String fromUserId) async {
+    print('FriendRepository: Finding and accepting request from $fromUserId');
+    
+    // Find the request
+    final snapshot = await _firebaseService.userFriendRequestsRef(userId)
+        .orderByChild('fromUserId')
+        .equalTo(fromUserId)
+        .get();
+    
+    if (!snapshot.exists || snapshot.value == null) {
+      throw Exception('Friend request not found');
+    }
+    
+    final data = Map<String, dynamic>.from(snapshot.value as Map);
+    String? requestId;
+    
+    for (var entry in data.entries) {
+      final requestData = Map<String, dynamic>.from(entry.value);
+      if (requestData['status'] == 'pending') {
+        requestId = entry.key;
+        break;
+      }
+    }
+    
+    if (requestId == null) {
+      throw Exception('No pending friend request found');
+    }
+    
+    await acceptFriendRequest(userId, requestId, fromUserId);
+  }
+
+  /// Reject friend request by fromUserId (find request automatically)
+  Future<void> rejectFriendRequestByUserId(String userId, String fromUserId) async {
+    print('FriendRepository: Finding and rejecting request from $fromUserId');
+    
+    // Find the request
+    final snapshot = await _firebaseService.userFriendRequestsRef(userId)
+        .orderByChild('fromUserId')
+        .equalTo(fromUserId)
+        .get();
+    
+    if (!snapshot.exists || snapshot.value == null) {
+      throw Exception('Friend request not found');
+    }
+    
+    final data = Map<String, dynamic>.from(snapshot.value as Map);
+    String? requestId;
+    
+    for (var entry in data.entries) {
+      final requestData = Map<String, dynamic>.from(entry.value);
+      if (requestData['status'] == 'pending') {
+        requestId = entry.key;
+        break;
+      }
+    }
+    
+    if (requestId == null) {
+      throw Exception('No pending friend request found');
+    }
+    
+    await rejectFriendRequest(userId, requestId);
   }
 
   @override
@@ -134,35 +231,53 @@ class FriendRepositoryImpl implements FriendRepository {
 
   @override
   Future<List<UserEntity>> searchUsers(String query) async {
-    if (query.isEmpty) return [];
-
     // Note: Firebase Realtime Database search is limited. 
     // We can only search by exact match or startAt/endAt on a specific child.
     // For a real app, use Algolia or ElasticSearch.
     // Here we'll do a simple client-side filtering for demonstration (not scalable).
     
-    final snapshot = await _firebaseService.usersRef().get();
-    if (!snapshot.exists) return [];
-
-    final users = <UserEntity>[];
-    final data = Map<String, dynamic>.from(snapshot.value as Map);
-    
-    data.forEach((key, value) {
-      final userData = Map<String, dynamic>.from(value);
-      final name = userData['name']?.toString().toLowerCase() ?? '';
-      if (name.contains(query.toLowerCase())) {
-        users.add(UserEntity(
-          id: key,
-          email: userData['email'] ?? '',
-          name: userData['name'] ?? '',
-          profileImage: userData['profileImage'],
-          createdAt: DateTime.fromMillisecondsSinceEpoch(userData['createdAt'] ?? 0),
-          isOnline: userData['isOnline'] ?? false,
-        ));
+    try {
+      print('FriendRepository: Searching users with query: "$query"');
+      final snapshot = await _firebaseService.usersRef().get();
+      
+      print('FriendRepository: Snapshot exists: ${snapshot.exists}');
+      print('FriendRepository: Snapshot value: ${snapshot.value}');
+      
+      if (!snapshot.exists || snapshot.value == null) {
+        print('FriendRepository: No users found in database');
+        return [];
       }
-    });
 
-    return users;
+      final users = <UserEntity>[];
+      final data = Map<String, dynamic>.from(snapshot.value as Map);
+      final lowerQuery = query.toLowerCase();
+      
+      print('FriendRepository: Found ${data.length} users in database');
+      
+      data.forEach((key, value) {
+        final userData = Map<String, dynamic>.from(value);
+        final name = userData['name']?.toString().toLowerCase() ?? '';
+        
+        // If query is empty, return all users; otherwise filter by name
+        if (query.isEmpty || name.contains(lowerQuery)) {
+          users.add(UserEntity(
+            id: key,
+            email: userData['email'] ?? '',
+            name: userData['name'] ?? '',
+            profileImage: userData['profileImage'],
+            bio: userData['bio'],
+            createdAt: DateTime.fromMillisecondsSinceEpoch(userData['createdAt'] ?? 0),
+            isOnline: userData['isOnline'] ?? false,
+          ));
+        }
+      });
+
+      print('FriendRepository: Returning ${users.length} users after filtering');
+      return users;
+    } catch (e) {
+      print('FriendRepository: Error searching users: $e');
+      rethrow;
+    }
   }
 
   @override

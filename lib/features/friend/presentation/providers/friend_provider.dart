@@ -45,6 +45,7 @@ class FriendProvider extends ChangeNotifier {
       await _friendRepository.acceptFriendRequest(userId, requestId, fromUserId);
     } catch (e) {
       _setError(e.toString());
+      rethrow;
     }
   }
 
@@ -53,6 +54,27 @@ class FriendProvider extends ChangeNotifier {
       await _friendRepository.rejectFriendRequest(userId, requestId);
     } catch (e) {
       _setError(e.toString());
+      rethrow;
+    }
+  }
+
+  /// Accept friend request by fromUserId (find request automatically)
+  Future<void> acceptFriendRequestByUserId(String userId, String fromUserId) async {
+    try {
+      await (_friendRepository as FriendRepositoryImpl).acceptFriendRequestByUserId(userId, fromUserId);
+    } catch (e) {
+      _setError(e.toString());
+      rethrow;
+    }
+  }
+
+  /// Reject friend request by fromUserId (find request automatically)
+  Future<void> rejectFriendRequestByUserId(String userId, String fromUserId) async {
+    try {
+      await (_friendRepository as FriendRepositoryImpl).rejectFriendRequestByUserId(userId, fromUserId);
+    } catch (e) {
+      _setError(e.toString());
+      rethrow;
     }
   }
 

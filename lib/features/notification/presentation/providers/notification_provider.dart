@@ -20,7 +20,7 @@ class NotificationProvider extends ChangeNotifier {
 
   void init(String userId) {
     _setLoading(true);
-    _notificationRepository.getNotifications(userId).listen((notifications) {
+    _notificationRepository.getNotificationsWithUserInfo(userId).listen((notifications) {
       _notifications = notifications;
       _setLoading(false);
     }, onError: (e) {

@@ -17,9 +17,12 @@ import '../../features/profile/presentation/pages/edit_profile_page.dart';
 import '../../features/notification/presentation/pages/notification_page.dart';
 import '../../features/watch/presentation/pages/watch_page.dart';
 import '../../features/marketplace/presentation/pages/marketplace_page.dart';
+import '../../features/marketplace/presentation/pages/create_product_page.dart';
+import '../../features/marketplace/presentation/pages/product_detail_page.dart';
+import '../../features/marketplace/presentation/pages/my_products_page.dart';
+import '../../features/marketplace/presentation/pages/saved_products_page.dart';
+import '../../features/marketplace/presentation/pages/search_products_page.dart';
 import '../../features/menu/presentation/pages/menu_page.dart';
-import '../../features/story/presentation/pages/story_viewer_page.dart';
-import '../../features/story/presentation/pages/create_story_page.dart';
 
 class AppRouter {
   static GoRouter createRouter(AuthProvider authProvider) {
@@ -133,6 +136,34 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: '/marketplace/create',
+        name: 'create-product',
+        builder: (context, state) => const CreateProductPage(),
+      ),
+      GoRoute(
+        path: '/marketplace/product/:productId',
+        name: 'product-detail',
+        builder: (context, state) {
+          final productId = state.pathParameters['productId']!;
+          return ProductDetailPage(productId: productId);
+        },
+      ),
+      GoRoute(
+        path: '/marketplace/my-products',
+        name: 'my-products',
+        builder: (context, state) => const MyProductsPage(),
+      ),
+      GoRoute(
+        path: '/marketplace/saved',
+        name: 'saved-products',
+        builder: (context, state) => const SavedProductsPage(),
+      ),
+      GoRoute(
+        path: '/marketplace/search',
+        name: 'search-products',
+        builder: (context, state) => const SearchProductsPage(),
+      ),
+      GoRoute(
         path: '/search-users',
         name: 'search-users',
         builder: (context, state) => const SearchUsersPage(),
@@ -142,7 +173,13 @@ class AppRouter {
         name: 'chat-detail',
         builder: (context, state) {
           final chatId = state.pathParameters['chatId']!;
-          return ChatDetailPage(chatId: chatId);
+          final extra = state.extra as Map<String, dynamic>?;
+          return ChatDetailPage(
+            chatId: chatId,
+            otherUserName: extra?['otherUserName'],
+            otherUserImage: extra?['otherUserImage'],
+            otherUserId: extra?['otherUserId'],
+          );
         },
       ),
       GoRoute(
@@ -167,20 +204,6 @@ class AppRouter {
         builder: (context, state) {
           final postId = state.pathParameters['postId']!;
           return PostDetailPage(postId: postId);
-        },
-      ),
-      // Story Routes
-      GoRoute(
-        path: '/create-story',
-        name: 'create-story',
-        builder: (context, state) => const CreateStoryPage(),
-      ),
-      GoRoute(
-        path: '/story-viewer/:userId',
-        name: 'story-viewer',
-        builder: (context, state) {
-          final userId = state.pathParameters['userId']!;
-          return StoryViewerPage(userId: userId);
         },
       ),
     ],

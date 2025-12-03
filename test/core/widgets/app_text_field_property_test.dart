@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:clone_social/core/widgets/app_text_field.dart';
-import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:vibe_social/core/widgets/app_text_field.dart';
+import 'package:vibe_social/core/themes/app_theme.dart';
 
 /// **Feature: social-app-complete-redesign, Property 18: Input Field State Styling**
 /// **Validates: Requirements 11.3**

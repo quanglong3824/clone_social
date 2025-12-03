@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import '../providers/profile_provider.dart';
 import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 import '../../../../core/themes/app_theme.dart';
@@ -18,9 +16,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
-  File? _profileImage;
-  File? _coverImage;
-  final _picker = ImagePicker();
   bool _isLoading = false;
 
   @override
@@ -40,17 +35,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
-  Future<void> _pickImage(bool isProfile) async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        if (isProfile) {
-          _profileImage = File(pickedFile.path);
-        } else {
-          _coverImage = File(pickedFile.path);
-        }
-      });
-    }
+  void _pickImage(bool isProfile) {
+    // Image picker removed - not supported on Flutter Web
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Tính năng chọn ảnh sẽ sớm có')),
+    );
   }
 
   Future<void> _saveProfile() async {
@@ -65,8 +54,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               userId: user.id,
               name: _nameController.text.trim(),
               bio: _bioController.text.trim(),
-              profileImage: _profileImage,
-              coverImage: _coverImage,
             );
         
         if (mounted) {
@@ -126,17 +113,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(8),
-                    image: _coverImage != null
-                        ? DecorationImage(
-                            image: FileImage(_coverImage!),
-                            fit: BoxFit.cover,
-                          )
-                        : (user.coverImage != null
-                            ? DecorationImage(
-                                image: NetworkImage(user.coverImage!),
-                                fit: BoxFit.cover,
-                              )
-                            : null),
+                    image: user.coverImage != null
+                      ? DecorationImage(
+                          image: NetworkImage(user.coverImage!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                   ),
                   child: Center(
                     child: Container(
@@ -165,12 +147,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: _profileImage != null
-                          ? FileImage(_profileImage!)
-                          : (user.profileImage != null
-                              ? NetworkImage(user.profileImage!) as ImageProvider
-                              : null),
-                      child: (_profileImage == null && user.profileImage == null)
+                      backgroundImage: user.profileImage != null
+                          ? NetworkImage(user.profileImage!) as ImageProvider
+                          : null,
+                      child: user.profileImage == null
                           ? const Icon(Icons.person, size: 60)
                           : null,
                     ),

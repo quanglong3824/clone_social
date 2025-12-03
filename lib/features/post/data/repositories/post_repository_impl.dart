@@ -218,7 +218,135 @@ class PostRepositoryImpl implements PostRepository {
       text: data['text'] ?? '',
       createdAt: DateTime.fromMillisecondsSinceEpoch(data['createdAt'] ?? 0),
       likes: data['likes'] != null ? Map<String, bool>.from(data['likes']) : {},
+      parentCommentId: data['parentCommentId'],
+      replyCount: data['replyCount'] ?? 0,
     );
+  }
+
+  @override
+  Future<void> likeComment(String postId, String commentId, String userId) async {
+    await _firebaseService.commentRef(postId, commentId).child('likes').child(userId).set(true);
+  }
+
+  @override
+  Future<void> unlikeComment(String postId, String commentId, String userId) async {
+    await _firebaseService.commentRef(postId, commentId).child('likes').child(userId).remove();
+  }
+
+  @override
+  Future<void> replyToComment(String postId, String commentId, String userId, String text) async {
+    final user = await _getCurrentUser();
+    if (user == null) throw Exception('User not found');
+
+    final replyId = _firebaseService.generateKey(_firebaseService.commentsRef(postId));
+    
+    await _firebaseService.commentRef(postId, replyId).set({
+      'userId': userId,
+      'userName': user['name'],
+      'userProfileImage': user['profileImage'],
+      'text': text,
+      'parentCommentId': commentId,
+      'createdAt': ServerValue.timestamp,
+    });
+
+    // Increment reply count on parent comment
+    await _firebaseService.commentRef(postId, commentId).child('replyCount').set(ServerValue.increment(1));
+    
+    // Increment total comment count
+    await _firebaseService.postRef(postId).child('commentCount').set(ServerValue.increment(1));
+  }
+
+  @override
+  Stream<List<CommentEntity>> getCommentReplies(String postId, String commentId) {
+    return _firebaseService.commentsRef(postId)
+        .orderByChild('parentCommentId')
+        .equalTo(commentId)
+        .onValue
+        .map((event) {
+      final replies = <CommentEntity>[];
+      if (event.snapshot.value != null) {
+        final data = Map<String, dynamic>.from(event.snapshot.value as Map);
+        data.forEach((key, value) {
+          replies.add(_mapToCommentEntity(key, postId, Map<String, dynamic>.from(value)));
+        });
+      }
+      replies.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      return replies;
+    });
+  }
+
+  @override
+  Future<void> sharePostToFeed(String postId, String userId, {String? text}) async {
+    final user = await _getCurrentUser();
+    if (user == null) throw Exception('User not found');
+
+    // Get original post
+    final originalPostSnapshot = await _firebaseService.postRef(postId).get();
+    if (!originalPostSnapshot.exists) throw Exception('Original post not found');
+
+    final originalPost = Map<String, dynamic>.from(originalPostSnapshot.value as Map);
+
+    // Create shared post
+    final sharedPostId = _firebaseService.generateKey(_firebaseService.postsRef());
+    
+    await _firebaseService.postRef(sharedPostId).set({
+      'userId': user['id'],
+      'userName': user['name'],
+      'userProfileImage': user['profileImage'],
+      'content': text ?? '',
+      'sharedPostId': postId,
+      'sharedPostUserId': originalPost['userId'],
+      'sharedPostUserName': originalPost['userName'],
+      'sharedPostUserProfileImage': originalPost['userProfileImage'],
+      'sharedPostContent': originalPost['content'],
+      'sharedPostImages': originalPost['images'],
+      'createdAt': ServerValue.timestamp,
+      'commentCount': 0,
+      'shareCount': 0,
+    });
+
+    // Increment share count on original post
+    await _firebaseService.postRef(postId).child('shareCount').set(ServerValue.increment(1));
+
+    // Send notification to original post owner
+    if (originalPost['userId'] != userId) {
+      final notifId = _firebaseService.generateKey(_firebaseService.notificationsRef());
+      await _firebaseService.userNotificationsRef(originalPost['userId']).child(notifId).set({
+        'type': 'share',
+        'fromUserId': userId,
+        'postId': postId,
+        'read': false,
+        'createdAt': ServerValue.timestamp,
+      });
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getPostReactions(String postId) async {
+    final snapshot = await _firebaseService.reactionsRef(postId).get();
+    if (!snapshot.exists || snapshot.value == null) return [];
+
+    final reactions = <Map<String, dynamic>>[];
+    final data = Map<String, dynamic>.from(snapshot.value as Map);
+
+    for (var entry in data.entries) {
+      final userId = entry.key;
+      final reactionType = entry.value.toString();
+      
+      // Get user info
+      final userSnapshot = await _firebaseService.userRef(userId).get();
+      if (userSnapshot.exists && userSnapshot.value != null) {
+        final userData = Map<String, dynamic>.from(userSnapshot.value as Map);
+        reactions.add({
+          'userId': userId,
+          'userName': userData['name'] ?? 'Unknown',
+          'userProfileImage': userData['profileImage'],
+          'reactionType': reactionType,
+        });
+      }
+    }
+
+    return reactions;
   }
 
   Future<Map<String, dynamic>?> _getCurrentUser() async {
@@ -265,6 +393,14 @@ class PostRepositoryImpl implements PostRepository {
       commentCount: data['commentCount'] ?? 0,
       shareCount: data['shareCount'] ?? 0,
       createdAt: DateTime.fromMillisecondsSinceEpoch(data['createdAt'] ?? 0),
+      sharedPostId: data['sharedPostId'],
+      sharedPostUserId: data['sharedPostUserId'],
+      sharedPostUserName: data['sharedPostUserName'],
+      sharedPostUserProfileImage: data['sharedPostUserProfileImage'],
+      sharedPostContent: data['sharedPostContent'],
+      sharedPostImages: data['sharedPostImages'] != null 
+          ? List<String>.from(data['sharedPostImages']) 
+          : null,
     );
   }
 }

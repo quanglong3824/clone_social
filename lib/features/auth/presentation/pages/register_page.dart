@@ -23,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage>
   final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  bool _emailVerificationSent = false;
   String? _nameError;
   String? _emailError;
   String? _passwordError;

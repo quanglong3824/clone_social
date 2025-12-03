@@ -1,0 +1,143 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      ".indexOn": ["name", "email", "createdAt", "isOnline"],
+      "$userId": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid == $userId",
+        "friends": {
+          ".read": "auth != null",
+          "$friendId": {
+            ".read": "auth != null",
+            ".write": "auth != null && (auth.uid == $userId || auth.uid == $friendId)"
+          }
+        },
+        "blockedUsers": {
+          ".read": "auth != null && auth.uid == $userId",
+          "$blockedId": {
+            ".write": "auth != null && auth.uid == $userId"
+          }
+        }
+      }
+    },
+    
+    "posts": {
+      ".read": "auth != null",
+      ".indexOn": ["userId", "createdAt"],
+      "$postId": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.child('userId').val() == auth.uid)",
+        "reactions": {
+          ".read": "auth != null",
+          "$userId": {
+            ".write": "auth != null && auth.uid == $userId"
+          }
+        },
+        "comments": {
+          ".read": "auth != null",
+          ".indexOn": ["createdAt", "userId", "parentCommentId"],
+          "$commentId": {
+            ".read": "auth != null",
+            ".write": "auth != null && (!data.exists() || data.child('userId').val() == auth.uid)",
+            "likes": {
+              ".read": "auth != null",
+              "$userId": {
+                ".write": "auth != null && auth.uid == $userId"
+              }
+            },
+            "replyCount": {
+              ".write": "auth != null"
+            }
+          }
+        },
+        "likes": {
+          ".read": "auth != null",
+          "$userId": {
+            ".write": "auth != null && auth.uid == $userId"
+          }
+        }
+      }
+    },
+    
+    "friendRequests": {
+      ".read": "auth != null",
+      ".indexOn": ["fromUserId", "toUserId"],
+      "$userId": {
+        ".read": "auth != null",
+        ".indexOn": ["fromUserId", "status", "createdAt"],
+        "$requestId": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    
+    "userChats": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        ".write": "auth != null",
+        ".indexOn": ["lastMessageTime"],
+        "$chatId": {
+          ".read": "auth != null && auth.uid == $userId",
+          ".write": "auth != null"
+        }
+      }
+    },
+    
+    "messages": {
+      "$chatId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        ".indexOn": ["createdAt", "senderId", "read"]
+      }
+    },
+    
+    "typing": {
+      "$chatId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    
+    "notifications": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        ".indexOn": ["createdAt", "read", "type", "fromUserId"],
+        "$notificationId": {
+          ".read": "auth != null && auth.uid == $userId",
+          ".write": "auth != null"
+        }
+      }
+    },
+    
+    "chats": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    
+    "products": {
+      ".read": "auth != null",
+      ".indexOn": ["sellerId", "category", "createdAt", "status"],
+      "$productId": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.child('sellerId').val() == auth.uid)",
+        "savedBy": {
+          "$userId": {
+            ".write": "auth != null && auth.uid == $userId"
+          }
+        },
+        "viewCount": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    
+    "savedProducts": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        ".write": "auth != null && auth.uid == $userId"
+      }
+    }
+  }
+}

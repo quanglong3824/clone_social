@@ -64,6 +64,14 @@ class PostEntity {
   final int shareCount;
   final DateTime createdAt;
   final DateTime? updatedAt;
+  
+  // Shared post fields
+  final String? sharedPostId;
+  final String? sharedPostUserId;
+  final String? sharedPostUserName;
+  final String? sharedPostUserProfileImage;
+  final String? sharedPostContent;
+  final List<String>? sharedPostImages;
 
   const PostEntity({
     required this.id,
@@ -78,7 +86,16 @@ class PostEntity {
     this.shareCount = 0,
     required this.createdAt,
     this.updatedAt,
+    this.sharedPostId,
+    this.sharedPostUserId,
+    this.sharedPostUserName,
+    this.sharedPostUserProfileImage,
+    this.sharedPostContent,
+    this.sharedPostImages,
   });
+  
+  /// Check if this is a shared post
+  bool get isSharedPost => sharedPostId != null;
 
   /// Total count of all reactions
   int get reactionCount => reactions.length;
@@ -131,6 +148,12 @@ class PostEntity {
     int? shareCount,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? sharedPostId,
+    String? sharedPostUserId,
+    String? sharedPostUserName,
+    String? sharedPostUserProfileImage,
+    String? sharedPostContent,
+    List<String>? sharedPostImages,
   }) {
     return PostEntity(
       id: id ?? this.id,
@@ -145,6 +168,12 @@ class PostEntity {
       shareCount: shareCount ?? this.shareCount,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      sharedPostId: sharedPostId ?? this.sharedPostId,
+      sharedPostUserId: sharedPostUserId ?? this.sharedPostUserId,
+      sharedPostUserName: sharedPostUserName ?? this.sharedPostUserName,
+      sharedPostUserProfileImage: sharedPostUserProfileImage ?? this.sharedPostUserProfileImage,
+      sharedPostContent: sharedPostContent ?? this.sharedPostContent,
+      sharedPostImages: sharedPostImages ?? this.sharedPostImages,
     );
   }
 }

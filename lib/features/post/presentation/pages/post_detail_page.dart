@@ -4,6 +4,7 @@ import 'package:clone_social/features/post/domain/entities/post_entity.dart';
 import 'package:clone_social/features/post/presentation/providers/post_provider.dart';
 import 'package:clone_social/features/post/presentation/widgets/post_item.dart';
 import 'package:clone_social/features/post/presentation/widgets/comment_section.dart';
+import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 
 class PostDetailPage extends StatelessWidget {
   final String postId;
@@ -181,6 +182,3 @@ class _CommentInputState extends State<_CommentInput> {
     );
   }
 }
-
-// Import for AuthProvider
-import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';

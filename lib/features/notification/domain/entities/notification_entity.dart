@@ -23,10 +23,13 @@ class NotificationEntity {
     required this.createdAt,
   });
 
+  /// Full title with user name included
   String get title {
     switch (type) {
       case 'like':
         return '$fromUserName liked your post';
+      case 'reaction':
+        return '$fromUserName reacted to your post';
       case 'comment':
         return '$fromUserName commented on your post';
       case 'share':
@@ -38,7 +41,29 @@ class NotificationEntity {
       case 'message':
         return '$fromUserName sent you a message';
       default:
-        return 'New notification';
+        return 'New notification from $fromUserName';
+    }
+  }
+
+  /// Action text without user name (for UI that shows name separately)
+  String get actionText {
+    switch (type) {
+      case 'like':
+        return 'liked your post';
+      case 'reaction':
+        return 'reacted to your post';
+      case 'comment':
+        return 'commented on your post';
+      case 'share':
+        return 'shared your post';
+      case 'friend_request':
+        return 'sent you a friend request';
+      case 'friend_accept':
+        return 'accepted your friend request';
+      case 'message':
+        return 'sent you a message';
+      default:
+        return 'interacted with you';
     }
   }
 

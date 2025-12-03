@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:clone_social/core/widgets/app_button.dart';
-import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:vibe_social/core/widgets/app_button.dart';
+import 'package:vibe_social/core/themes/app_theme.dart';
 
 /// **Feature: social-app-complete-redesign, Property 17: Button Variant Styling**
 /// **Validates: Requirements 11.2**

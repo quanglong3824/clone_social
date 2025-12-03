@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -17,11 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _firebaseService = firebaseService ?? FirebaseService(),
         _googleSignIn = googleSignIn ?? GoogleSignIn(
-          clientId: '977726113490-q4hoo0v18q2bv5bqogqpmgk9p67ou8vi.apps.googleusercontent.com',
-          scopes: [
-            'email',
-            'https://www.googleapis.com/auth/contacts.readonly',
-          ],
+          scopes: ['email', 'profile'],
         );
 
   @override
@@ -91,16 +88,27 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserEntity> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) throw Exception('Google Sign In aborted');
+      UserCredential result;
+      
+      if (kIsWeb) {
+        // Web: Use signInWithPopup
+        final googleProvider = GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('profile');
+        result = await _firebaseAuth.signInWithPopup(googleProvider);
+      } else {
+        // Mobile: Use GoogleSignIn package
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        if (googleUser == null) throw Exception('Google Sign In aborted');
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        result = await _firebaseAuth.signInWithCredential(credential);
+      }
 
-      final result = await _firebaseAuth.signInWithCredential(credential);
       final user = result.user!;
       
       // Check if user exists in DB, if not create

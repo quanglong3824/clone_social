@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart' hide test, group, expect;
 import 'package:glados/glados.dart';
-import 'package:clone_social/core/utils/validation_utils.dart';
+import 'package:vibe_social/core/utils/validation_utils.dart';
 
 /// **Feature: social-app-complete-redesign, Property 1: Email Validation Rejection**
 /// **Validates: Requirements 1.2**
