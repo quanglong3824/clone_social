@@ -6,6 +6,7 @@ import '../../domain/entities/post_entity.dart';
 import 'package:clone_social/features/post/presentation/providers/post_provider.dart';
 import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 import '../../../../core/themes/app_theme.dart';
+import '../../../../core/animations/app_animations.dart';
 import 'post_image_grid.dart';
 import 'reaction_picker.dart';
 import 'share_bottom_sheet.dart';
@@ -434,7 +435,7 @@ class _ReactionsListSheet extends StatelessWidget {
   }
 }
 
-class _ActionButton extends StatelessWidget {
+class _ActionButton extends StatefulWidget {
   final Widget icon;
   final String label;
   final bool isActive;
@@ -446,22 +447,58 @@ class _ActionButton extends StatelessWidget {
   });
 
   @override
+  State<_ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<_ActionButton> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: AppDurations.fast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          icon,
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: isActive ? AppTheme.primaryBlue : Colors.grey[600],
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-            ),
+    return Listener(
+      onPointerDown: (_) => _controller.forward(),
+      onPointerUp: (_) => _controller.reverse(),
+      onPointerCancel: (_) => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widget.icon,
+              const SizedBox(width: 4),
+              AnimatedDefaultTextStyle(
+                duration: AppDurations.fast,
+                style: TextStyle(
+                  color: widget.isActive ? AppTheme.primaryBlue : Colors.grey[600],
+                  fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.normal,
+                  fontSize: 14,
+                ),
+                child: Text(widget.label),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

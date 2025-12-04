@@ -9,6 +9,7 @@ import 'package:clone_social/features/friend/presentation/providers/friend_provi
 import 'package:clone_social/features/chat/presentation/providers/chat_provider.dart';
 import 'package:clone_social/features/notification/domain/entities/notification_entity.dart';
 import '../../../../core/themes/app_theme.dart';
+import '../../../../core/animations/app_animations.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -52,29 +53,57 @@ class _NotificationPageState extends State<NotificationPage> {
         ],
       ),
       body: notificationProvider.notifications.isEmpty
-          ? const Center(child: Text('No notifications yet'))
+          ? Center(
+              child: SlideIn.fromBottom(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ScaleIn(
+                      child: Icon(
+                        Icons.notifications_none,
+                        size: 64,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    FadeIn(
+                      delay: const Duration(milliseconds: 100),
+                      child: const Text(
+                        'Chưa có thông báo nào',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           : ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: notificationProvider.notifications.length,
               itemBuilder: (context, index) {
                 final notification = notificationProvider.notifications[index];
-                return Dismissible(
-                  key: Key(notification.id),
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    context.read<NotificationProvider>().deleteNotification(
-                          currentUser.id,
-                          notification.id,
-                        );
-                  },
-                  child: Container(
-                    color: notification.read ? null : AppTheme.primaryBlue.withOpacity(0.1),
-                    child: _buildNotificationTile(context, notification, currentUser),
+                return AnimatedListItem(
+                  index: index,
+                  child: Dismissible(
+                    key: Key(notification.id),
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      context.read<NotificationProvider>().deleteNotification(
+                            currentUser.id,
+                            notification.id,
+                          );
+                    },
+                    child: AnimatedContainer(
+                      duration: AppDurations.fast,
+                      color: notification.read ? null : AppTheme.primaryBlue.withOpacity(0.1),
+                      child: _buildNotificationTile(context, notification, currentUser),
+                    ),
                   ),
                 );
               },

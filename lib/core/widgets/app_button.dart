@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
+import '../animations/app_animations.dart';
 
 enum ButtonVariant { primary, secondary, outline, text }
 enum ButtonSize { small, medium, large }
 
-class AppButton extends StatelessWidget {
+class AppButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final ButtonVariant variant;
@@ -25,18 +26,66 @@ class AppButton extends StatelessWidget {
   });
 
   @override
+  State<AppButton> createState() => _AppButtonState();
+}
+
+class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: AppDurations.fast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    if (widget.onPressed != null && !widget.isLoading) {
+      _controller.forward();
+    }
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.reverse();
+  }
+
+  void _onTapCancel() {
+    _controller.reverse();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return SizedBox(
-      width: isFullWidth ? double.infinity : null,
-      height: _getHeight(),
-      child: _buildButton(context, isDark),
+    return GestureDetector(
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTapCancel: _onTapCancel,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: SizedBox(
+          width: widget.isFullWidth ? double.infinity : null,
+          height: _getHeight(),
+          child: _buildButton(context, isDark),
+        ),
+      ),
     );
   }
 
   double _getHeight() {
-    switch (size) {
+    switch (widget.size) {
       case ButtonSize.small:
         return 32.0;
       case ButtonSize.medium:
@@ -47,7 +96,7 @@ class AppButton extends StatelessWidget {
   }
 
   EdgeInsets _getPadding() {
-    switch (size) {
+    switch (widget.size) {
       case ButtonSize.small:
         return const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0);
       case ButtonSize.medium:
@@ -57,9 +106,8 @@ class AppButton extends StatelessWidget {
     }
   }
 
-
   double _getFontSize() {
-    switch (size) {
+    switch (widget.size) {
       case ButtonSize.small:
         return 12.0;
       case ButtonSize.medium:
@@ -70,7 +118,7 @@ class AppButton extends StatelessWidget {
   }
 
   double _getIconSize() {
-    switch (size) {
+    switch (widget.size) {
       case ButtonSize.small:
         return 14.0;
       case ButtonSize.medium:
@@ -81,7 +129,7 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context, bool isDark) {
-    switch (variant) {
+    switch (widget.variant) {
       case ButtonVariant.primary:
         return _buildPrimaryButton(isDark);
       case ButtonVariant.secondary:
@@ -95,7 +143,7 @@ class AppButton extends StatelessWidget {
 
   Widget _buildPrimaryButton(bool isDark) {
     return ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
+      onPressed: widget.isLoading ? null : widget.onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.primaryBlue,
         foregroundColor: Colors.white,
@@ -116,7 +164,7 @@ class AppButton extends StatelessWidget {
     final fgColor = AppTheme.primaryBlue;
     
     return ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
+      onPressed: widget.isLoading ? null : widget.onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor,
         foregroundColor: fgColor,
@@ -137,7 +185,7 @@ class AppButton extends StatelessWidget {
     final fgColor = isDark ? AppTheme.textDark : AppTheme.textPrimary;
     
     return OutlinedButton(
-      onPressed: isLoading ? null : onPressed,
+      onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: fgColor,
         side: BorderSide(color: borderColor),
@@ -154,7 +202,7 @@ class AppButton extends StatelessWidget {
     final fgColor = AppTheme.primaryBlue;
     
     return TextButton(
-      onPressed: isLoading ? null : onPressed,
+      onPressed: widget.isLoading ? null : widget.onPressed,
       style: TextButton.styleFrom(
         foregroundColor: fgColor,
         padding: _getPadding(),
@@ -167,7 +215,7 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _buildButtonContent(Color color) {
-    if (isLoading) {
+    if (widget.isLoading) {
       return SizedBox(
         width: _getIconSize(),
         height: _getIconSize(),
@@ -178,14 +226,14 @@ class AppButton extends StatelessWidget {
       );
     }
 
-    if (icon != null) {
+    if (widget.icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: _getIconSize()),
-          SizedBox(width: AppTheme.spacingXs),
+          Icon(widget.icon, size: _getIconSize()),
+          const SizedBox(width: AppTheme.spacingXs),
           Text(
-            label,
+            widget.label,
             style: TextStyle(
               fontSize: _getFontSize(),
               fontWeight: FontWeight.w600,
@@ -196,7 +244,7 @@ class AppButton extends StatelessWidget {
     }
 
     return Text(
-      label,
+      widget.label,
       style: TextStyle(
         fontSize: _getFontSize(),
         fontWeight: FontWeight.w600,

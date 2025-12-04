@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:clone_social/core/animations/app_animations.dart';
+import 'package:clone_social/core/widgets/shimmer_loading.dart';
 import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 import '../providers/marketplace_provider.dart';
 import '../../domain/entities/product_entity.dart';
@@ -14,16 +16,35 @@ class MarketplacePage extends StatefulWidget {
   State<MarketplacePage> createState() => _MarketplacePageState();
 }
 
-class _MarketplacePageState extends State<MarketplacePage> {
+class _MarketplacePageState extends State<MarketplacePage> with SingleTickerProviderStateMixin {
+  late AnimationController _fabController;
+  late Animation<double> _fabAnimation;
+
   @override
   void initState() {
     super.initState();
+    _fabController = AnimationController(
+      duration: AppDurations.slow,
+      vsync: this,
+    );
+    _fabAnimation = CurvedAnimation(
+      parent: _fabController,
+      curve: AppCurves.spring,
+    );
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final currentUser = context.read<AuthProvider>().currentUser;
       if (currentUser != null) {
         context.read<MarketplaceProvider>().init(currentUser.id);
       }
+      _fabController.forward();
     });
+  }
+
+  @override
+  void dispose() {
+    _fabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -45,11 +66,14 @@ class _MarketplacePageState extends State<MarketplacePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/marketplace/create'),
-        backgroundColor: AppTheme.primaryBlue,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Đăng bán', style: TextStyle(color: Colors.white)),
+      floatingActionButton: ScaleTransition(
+        scale: _fabAnimation,
+        child: FloatingActionButton.extended(
+          onPressed: () => context.push('/marketplace/create'),
+          backgroundColor: AppTheme.primaryBlue,
+          icon: const Icon(Icons.add, color: Colors.white),
+          label: const Text('Đăng bán', style: TextStyle(color: Colors.white)),
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -153,24 +177,46 @@ class _MarketplacePageState extends State<MarketplacePage> {
 
             // Products grid
             if (marketplaceProvider.isLoading)
-              const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
+              SliverPadding(
+                padding: const EdgeInsets.all(12),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.7,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => const ProductShimmer(),
+                    childCount: 4,
+                  ),
+                ),
               )
             else if (marketplaceProvider.products.isEmpty)
               SliverFillRemaining(
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.storefront, size: 64, color: Colors.grey[400]),
-                      const SizedBox(height: 16),
-                      const Text('Chưa có sản phẩm nào'),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () => context.push('/marketplace/create'),
-                        child: const Text('Đăng bán ngay'),
-                      ),
-                    ],
+                  child: SlideIn.fromBottom(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ScaleIn(
+                          child: Icon(Icons.storefront, size: 64, color: Colors.grey[400]),
+                        ),
+                        const SizedBox(height: 16),
+                        FadeIn(
+                          delay: const Duration(milliseconds: 100),
+                          child: const Text('Chưa có sản phẩm nào'),
+                        ),
+                        const SizedBox(height: 8),
+                        SlideIn.fromBottom(
+                          delay: const Duration(milliseconds: 150),
+                          child: ElevatedButton(
+                            onPressed: () => context.push('/marketplace/create'),
+                            child: const Text('Đăng bán ngay'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -187,13 +233,16 @@ class _MarketplacePageState extends State<MarketplacePage> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final product = marketplaceProvider.products[index];
-                      return ProductCard(
-                        product: product,
-                        onTap: () => context.push('/marketplace/product/${product.id}'),
-                        onSave: currentUser != null
-                            ? () => marketplaceProvider.toggleSaveProduct(product.id, currentUser.id)
-                            : null,
-                        isSaved: currentUser != null && product.isSavedBy(currentUser.id),
+                      return AnimatedListItem(
+                        index: index,
+                        child: ProductCard(
+                          product: product,
+                          onTap: () => context.push('/marketplace/product/${product.id}'),
+                          onSave: currentUser != null
+                              ? () => marketplaceProvider.toggleSaveProduct(product.id, currentUser.id)
+                              : null,
+                          isSaved: currentUser != null && product.isSavedBy(currentUser.id),
+                        ),
                       );
                     },
                     childCount: marketplaceProvider.products.length,
@@ -207,7 +256,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
   }
 }
 
-class _ActionButton extends StatelessWidget {
+class _ActionButton extends StatefulWidget {
   final IconData icon;
   final String label;
   final Color color;
@@ -221,21 +270,61 @@ class _ActionButton extends StatelessWidget {
   });
 
   @override
+  State<_ActionButton> createState() => _ActionButtonState();
+}
+
+class _ActionButtonState extends State<_ActionButton> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: AppDurations.fast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Material(
-      color: color,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: widget.color,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: widget.color.withOpacity(0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: Colors.white),
+              Icon(widget.icon, color: Colors.white),
               const SizedBox(width: 8),
-              Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              Text(widget.label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
             ],
           ),
         ),
@@ -244,7 +333,7 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
-class _CategoryItem extends StatelessWidget {
+class _CategoryItem extends StatefulWidget {
   final String name;
   final String iconName;
   final bool isSelected;
@@ -257,8 +346,34 @@ class _CategoryItem extends StatelessWidget {
     required this.onTap,
   });
 
+  @override
+  State<_CategoryItem> createState() => _CategoryItemState();
+}
+
+class _CategoryItemState extends State<_CategoryItem> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: AppDurations.fast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   IconData _getIcon() {
-    switch (iconName) {
+    switch (widget.iconName) {
       case 'directions_car': return Icons.directions_car;
       case 'phone_android': return Icons.phone_android;
       case 'home': return Icons.home;
@@ -276,38 +391,53 @@ class _CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          width: 80,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: isSelected ? AppTheme.primaryBlue.withOpacity(0.1) : Colors.grey[100],
-            borderRadius: BorderRadius.circular(12),
-            border: isSelected ? Border.all(color: AppTheme.primaryBlue, width: 2) : null,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                _getIcon(),
-                size: 32,
-                color: isSelected ? AppTheme.primaryBlue : Colors.grey[700],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? AppTheme.primaryBlue : Colors.grey[700],
+      child: GestureDetector(
+        onTapDown: (_) => _controller.forward(),
+        onTapUp: (_) {
+          _controller.reverse();
+          widget.onTap();
+        },
+        onTapCancel: () => _controller.reverse(),
+        child: ScaleTransition(
+          scale: _scaleAnimation,
+          child: AnimatedContainer(
+            duration: AppDurations.fast,
+            width: 80,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: widget.isSelected ? AppTheme.primaryBlue.withOpacity(0.1) : Colors.grey[100],
+              borderRadius: BorderRadius.circular(12),
+              border: widget.isSelected ? Border.all(color: AppTheme.primaryBlue, width: 2) : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedSwitcher(
+                  duration: AppDurations.fast,
+                  child: Icon(
+                    _getIcon(),
+                    key: ValueKey(widget.isSelected),
+                    size: 32,
+                    color: widget.isSelected ? AppTheme.primaryBlue : Colors.grey[700],
+                  ),
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+                const SizedBox(height: 8),
+                AnimatedDefaultTextStyle(
+                  duration: AppDurations.fast,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: widget.isSelected ? FontWeight.bold : FontWeight.normal,
+                    color: widget.isSelected ? AppTheme.primaryBlue : Colors.grey[700],
+                  ),
+                  child: Text(
+                    widget.name,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,11 +1,11 @@
 {
-    "name": "clone_social",
-    "short_name": "clone_social",
+    "name": "Social Home",
+    "short_name": "Social Home",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#667eea",
+    "theme_color": "#667eea",
+    "description": "Connect • Share • Belong - Your social home for meaningful connections.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

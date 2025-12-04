@@ -5,6 +5,7 @@ import 'package:clone_social/features/friend/presentation/providers/friend_provi
 import 'package:clone_social/features/chat/presentation/providers/chat_provider.dart';
 import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:clone_social/core/animations/app_animations.dart';
 
 class FriendsPage extends StatefulWidget {
   const FriendsPage({super.key});
@@ -246,13 +247,16 @@ class _SuggestionsTabState extends State<_SuggestionsTab> {
     return RefreshIndicator(
       onRefresh: _loadSuggestions,
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(8),
         itemCount: _suggestions.length,
         itemBuilder: (context, index) {
           final user = _suggestions[index];
           final hasSentRequest = _sentRequests.contains(user.id);
           
-          return Card(
+          return AnimatedListItem(
+            index: index,
+            child: Card(
             margin: const EdgeInsets.symmetric(vertical: 4),
             child: ListTile(
               leading: CircleAvatar(
@@ -292,6 +296,7 @@ class _SuggestionsTabState extends State<_SuggestionsTab> {
                     ),
               onTap: () => context.push('/profile/${user.id}'),
             ),
+          ),
           );
         },
       ),
@@ -330,13 +335,17 @@ class _FriendRequestsTab extends StatelessWidget {
     }
 
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(8),
       itemCount: requests.length,
       itemBuilder: (context, index) {
         final request = requests[index];
-        return _FriendRequestCard(
-          request: request,
-          currentUserId: currentUserId,
+        return AnimatedListItem(
+          index: index,
+          child: _FriendRequestCard(
+            request: request,
+            currentUserId: currentUserId,
+          ),
         );
       },
     );

@@ -1,230 +1,271 @@
-# Facebook Clone - Flutter App
+# 📱 Facebook Clone - Flutter App
 
-A full-featured Facebook clone built with Flutter and Firebase Realtime Database, supporting both mobile and web platforms.
+Ứng dụng mạng xã hội clone Facebook đầy đủ tính năng, được xây dựng bằng Flutter và Firebase Realtime Database, hỗ trợ cả mobile và web.
 
-## Features
+## ✨ Tính năng chính
 
-### Authentication
-- ✅ User Registration
-- ✅ User Login
-- ✅ Forgot Password
-- ✅ Email Verification
+### 🔐 Xác thực (Authentication)
+- ✅ Đăng ký tài khoản
+- ✅ Đăng nhập Email/Password
+- ✅ Đăng nhập Google
+- ✅ Quên mật khẩu
+- ✅ Theo dõi trạng thái online/offline
 
-### Posts
-- ✅ Create Posts (Text, Images, Videos)
-- ✅ Like Posts
-- ✅ Comment on Posts
-- ✅ Share Posts
-- ✅ Real-time Updates
+### 📝 Bài viết (Posts)
+- ✅ Tạo bài viết (Text, Hình ảnh, Video)
+- ✅ Hệ thống Reactions (6 loại: Like, Love, Haha, Wow, Sad, Angry)
+- ✅ Bình luận & Trả lời bình luận
+- ✅ Chia sẻ bài viết
+- ✅ Xóa bài viết
+- ✅ Cập nhật realtime
 
-### Social Features
-- ✅ Find Friends
-- ✅ Send Friend Requests
-- ✅ Accept/Reject Friend Requests
-- ✅ Real-time Messaging
-- ✅ User Profiles
-- ✅ Notifications
+### 💬 Nhắn tin (Chat)
+- ✅ Danh sách cuộc trò chuyện
+- ✅ Gửi tin nhắn text & hình ảnh
+- ✅ Typing indicator
+- ✅ Đánh dấu đã đọc
+- ✅ Tìm kiếm tin nhắn
+- ✅ Xóa cuộc trò chuyện
 
-## Tech Stack
+### 👥 Bạn bè (Friends)
+- ✅ Tìm kiếm người dùng
+- ✅ Gửi/Nhận lời mời kết bạn
+- ✅ Chấp nhận/Từ chối lời mời
+- ✅ Hủy kết bạn
 
-- **Framework**: Flutter (Mobile & Web)
-- **Database**: Firebase Realtime Database
-- **Authentication**: Firebase Auth
-- **Storage**: Firebase Storage
-- **State Management**: Provider / Riverpod
-- **Architecture**: Clean Architecture
+### 👤 Hồ sơ (Profile)
+- ✅ Xem/Chỉnh sửa hồ sơ
+- ✅ Xem bài viết của người dùng
+- ✅ Xem danh sách bạn bè
+- ✅ Chặn/Bỏ chặn người dùng
 
-## Project Structure
+### 🛒 Marketplace
+- ✅ Đăng bán sản phẩm
+- ✅ Tìm kiếm & Lọc theo danh mục
+- ✅ Lưu sản phẩm yêu thích
+- ✅ Liên hệ người bán
+- ✅ Quản lý sản phẩm của tôi
+
+### 🎬 Watch (Video)
+- ✅ Xem danh sách video
+- ✅ Phân loại theo danh mục
+- ✅ Like/Lưu video
+- ✅ Follow kênh
+- ✅ Tích hợp Pexels API
+
+### 🔔 Thông báo
+- ✅ Thông báo reaction/comment/share
+- ✅ Thông báo lời mời kết bạn
+- ✅ Thông báo tin nhắn mới
+- ✅ Đánh dấu đã đọc
+
+---
+
+## 📱 Danh sách màn hình (28 màn hình)
+
+### 🔐 Authentication (4 màn hình)
+| Màn hình | Route | Mô tả |
+|----------|-------|-------|
+| Splash | `/splash` | Màn hình khởi động |
+| Đăng nhập | `/login` | Đăng nhập tài khoản |
+| Đăng ký | `/register` | Tạo tài khoản mới |
+| Quên mật khẩu | `/forgot-password` | Reset mật khẩu |
+
+### 🏠 Main Navigation (7 tab)
+| Màn hình | Route | Tab |
+|----------|-------|-----|
+| Trang chủ | `/` | 0 |
+| Bạn bè | `/friends` | 1 |
+| Chat | `/chat` | 2 |
+| Watch | `/watch` | 3 |
+| Marketplace | `/marketplace` | 4 |
+| Thông báo | `/notifications` | 5 |
+| Menu | `/menu` | 6 |
+
+### 📝 Post (2 màn hình phụ)
+| Màn hình | Route |
+|----------|-------|
+| Tạo bài viết | `/create-post` |
+| Chi tiết bài viết | `/post/:postId` |
+
+### 💬 Chat (1 màn hình phụ)
+| Màn hình | Route |
+|----------|-------|
+| Chi tiết chat | `/chat/:chatId` |
+
+### 👥 Friends (1 màn hình phụ)
+| Màn hình | Route |
+|----------|-------|
+| Tìm kiếm người dùng | `/search-users` |
+
+### 👤 Profile (2 màn hình)
+| Màn hình | Route |
+|----------|-------|
+| Xem hồ sơ | `/profile/:userId` |
+| Chỉnh sửa hồ sơ | `/edit-profile` |
+
+### 🛒 Marketplace (5 màn hình phụ)
+| Màn hình | Route |
+|----------|-------|
+| Tạo sản phẩm | `/marketplace/create` |
+| Chi tiết sản phẩm | `/marketplace/product/:productId` |
+| Sản phẩm của tôi | `/marketplace/my-products` |
+| Sản phẩm đã lưu | `/marketplace/saved` |
+| Tìm kiếm sản phẩm | `/marketplace/search` |
+
+### 🎬 Watch (3 màn hình phụ)
+| Màn hình | Navigation |
+|----------|------------|
+| Chi tiết video | Push navigation |
+| Tìm kiếm video | Push navigation |
+| Thống kê xem | Bottom sheet |
+
+---
+
+## 🛠 Tech Stack
+
+| Công nghệ | Mục đích |
+|-----------|----------|
+| **Flutter 3.x** | Framework chính |
+| **Firebase Auth** | Xác thực |
+| **Firebase Realtime Database** | Database |
+| **Firebase Storage** | Lưu trữ media |
+| **Provider** | State management |
+| **go_router** | Navigation |
+| **Pexels API** | Video content |
+
+---
+
+## 📁 Cấu trúc dự án
 
 ```
 lib/
-├── core/                    # Core functionality
-│   ├── constants/          # App constants
-│   ├── utils/              # Utility functions
-│   ├── services/           # Core services (Firebase, etc.)
-│   ├── routes/             # App routing
-│   ├── themes/             # App themes
-│   └── widgets/            # Reusable widgets
-├── features/               # Feature modules
-│   ├── auth/              # Authentication
-│   ├── post/              # Post management
-│   ├── friend/            # Friend system
-│   ├── chat/              # Messaging
-│   ├── profile/           # User profiles
-│   └── notification/      # Notifications
-│       ├── data/          # Data layer
-│       │   ├── models/
-│       │   ├── repositories/
-│       │   └── datasources/
-│       ├── domain/        # Domain layer
-│       │   ├── entities/
-│       │   ├── repositories/
-│       │   └── usecases/
-│       └── presentation/  # Presentation layer
-│           ├── pages/
-│           ├── widgets/
-│           └── providers/
-└── main.dart              # App entry point
+├── core/                    # Core modules
+│   ├── animations/         # Animation utilities
+│   ├── constants/          # Hằng số
+│   ├── routes/             # Định tuyến (go_router)
+│   ├── services/           # Firebase services
+│   ├── themes/             # Theme (Light/Dark)
+│   ├── utils/              # Tiện ích
+│   └── widgets/            # Widget dùng chung
+├── features/               # Các tính năng
+│   ├── auth/              # Xác thực
+│   ├── chat/              # Nhắn tin
+│   ├── friend/            # Bạn bè
+│   ├── marketplace/       # Marketplace
+│   ├── menu/              # Menu
+│   ├── notification/      # Thông báo
+│   ├── post/              # Bài viết
+│   ├── profile/           # Hồ sơ
+│   └── watch/             # Video
+└── main.dart
 
 assets/
-├── images/                # Image assets
-├── icons/                 # Icon assets
+├── animations/            # Lottie animations
 ├── fonts/                 # Custom fonts
-└── animations/            # Animation files
-
-config/
-├── firebase/              # Firebase configuration
-└── environment/           # Environment configs
+├── icons/                 # Icon assets
+└── images/                # Image assets
 ```
 
-## Getting Started
+Mỗi feature có cấu trúc Clean Architecture:
+```
+feature/
+├── data/
+│   └── repositories/      # Repository implementations
+├── domain/
+│   ├── entities/          # Entity models
+│   └── repositories/      # Repository interfaces
+└── presentation/
+    ├── pages/             # UI pages
+    ├── providers/         # State management
+    └── widgets/           # Feature widgets
+```
 
-### Prerequisites
+---
 
-- Flutter SDK (latest stable version)
+## 🚀 Bắt đầu
+
+### Yêu cầu
+- Flutter SDK >= 3.0.0
 - Firebase account
 - Android Studio / VS Code
-- Chrome (for web development)
 
-### Installation
+### Cài đặt
 
-1. Clone the repository
 ```bash
+# Clone repository
 git clone <repository-url>
 cd clone_social
-```
 
-2. Install dependencies
-```bash
+# Cài đặt dependencies
 flutter pub get
-```
 
-3. Configure Firebase
-   - Create a Firebase project
-   - Add Android/iOS/Web apps
-   - Download configuration files
-   - Place `google-services.json` in `android/app/`
-   - Place `GoogleService-Info.plist` in `ios/Runner/`
-   - Update web configuration in `web/index.html`
-
-4. Run the app
-```bash
-# Mobile
+# Chạy ứng dụng
 flutter run
 
-# Web
+# Chạy trên web
 flutter run -d chrome
 ```
 
-## Firebase Realtime Database Structure
+### Cấu hình Firebase
+1. Tạo Firebase project
+2. Thêm Android/iOS/Web apps
+3. Download và đặt file cấu hình:
+   - `android/app/google-services.json`
+   - `ios/Runner/GoogleService-Info.plist`
+4. Cập nhật `lib/firebase_options.dart`
+
+---
+
+## 📊 Database Structure
 
 ```json
 {
-  "users": {
-    "userId": {
-      "name": "string",
-      "email": "string",
-      "profileImage": "string",
-      "bio": "string",
-      "friends": ["userId1", "userId2"],
-      "createdAt": "timestamp"
-    }
-  },
-  "posts": {
-    "postId": {
-      "userId": "string",
-      "content": "string",
-      "images": ["url1", "url2"],
-      "likes": {
-        "userId": true
-      },
-      "comments": {
-        "commentId": {
-          "userId": "string",
-          "text": "string",
-          "createdAt": "timestamp"
-        }
-      },
-      "shares": 0,
-      "createdAt": "timestamp"
-    }
-  },
-  "friendRequests": {
-    "userId": {
-      "requestId": {
-        "fromUserId": "string",
-        "status": "pending|accepted|rejected",
-        "createdAt": "timestamp"
-      }
-    }
-  },
-  "chats": {
-    "chatId": {
-      "participants": ["userId1", "userId2"],
-      "lastMessage": "string",
-      "lastMessageTime": "timestamp"
-    }
-  },
-  "messages": {
-    "chatId": {
-      "messageId": {
-        "senderId": "string",
-        "text": "string",
-        "type": "text|image|video",
-        "createdAt": "timestamp",
-        "read": false
-      }
-    }
-  },
-  "notifications": {
-    "userId": {
-      "notificationId": {
-        "type": "like|comment|friend_request|message",
-        "fromUserId": "string",
-        "postId": "string",
-        "read": false,
-        "createdAt": "timestamp"
-      }
-    }
-  }
+  "users": { "userId": { "name", "email", "profileImage", "friends", "isOnline" } },
+  "posts": { "postId": { "userId", "content", "images", "reactions", "commentCount" } },
+  "comments": { "postId": { "commentId": { "userId", "text", "likes", "replyCount" } } },
+  "chats": { "chatId": { "participants", "lastMessage", "unreadCount" } },
+  "messages": { "chatId": { "messageId": { "senderId", "text", "type", "read" } } },
+  "friendRequests": { "userId": { "requestId": { "fromUserId", "status" } } },
+  "notifications": { "userId": { "notificationId": { "type", "fromUserId", "read" } } },
+  "products": { "productId": { "sellerId", "title", "price", "category", "status" } }
 }
 ```
 
-## Development
+---
 
-### Running Tests
-```bash
-# Unit tests
-flutter test test/unit
+## 🎨 Animations
 
-# Widget tests
-flutter test test/widget
+App sử dụng smooth animations cho UX tốt hơn:
+- **FadeIn/SlideIn**: Hiệu ứng xuất hiện
+- **TapScale**: Hiệu ứng nhấn button
+- **AnimatedListItem**: Staggered list animation
+- **Shimmer Loading**: Loading placeholders
+- **Page Transitions**: Smooth navigation
 
-# Integration tests
-flutter test test/integration
-```
+---
 
-### Building for Production
+## 📈 Tổng kết
 
-```bash
-# Android
-flutter build apk --release
+| Feature | Trạng thái | Màn hình |
+|---------|------------|----------|
+| Authentication | ✅ | 4 |
+| Posts | ✅ | 3 |
+| Chat | ✅ | 2 |
+| Friends | ✅ | 2 |
+| Profile | ✅ | 2 |
+| Marketplace | ✅ | 6 |
+| Watch | ✅ | 4 |
+| Notifications | ✅ | 1 |
+| Menu | ✅ | 1 |
+| Story | 🚧 | 0 |
 
-# iOS
-flutter build ios --release
+**Tổng: 28 màn hình, 9/10 features hoàn thành**
 
-# Web
-flutter build web --release
-```
+---
 
-## Contributing
+## 📄 License
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Dự án này chỉ dành cho mục đích học tập.
 
-## License
-
-This project is for educational purposes only.
+*Cập nhật: Tháng 12, 2025*

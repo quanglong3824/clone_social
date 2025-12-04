@@ -1,0 +1,919 @@
+{
+  "friendRequests": {
+    "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+      "-OfYwZaIEP9bzag7jJDB": {
+        "createdAt": 1764760898164,
+        "fromUserId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "fromUserName": "Linh",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+        "status": "accepted"
+      }
+    },
+    "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+      "-OfYdQYARONN3Vn19gm_": {
+        "createdAt": 1764755880413,
+        "fromUserId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+        "fromUserName": "test",
+        "status": "accepted"
+      },
+      "-OfYwIirvtgtOMdC3uvB": {
+        "createdAt": 1764760829080,
+        "fromUserId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "fromUserName": "Linh",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+        "status": "pending"
+      }
+    },
+    "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+      "-OfYwSfCEajiAaRwVIBq": {
+        "createdAt": 1764760869836,
+        "fromUserId": "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+        "fromUserName": "Long Quang",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c",
+        "status": "accepted"
+      }
+    }
+  },
+  "messages": {
+    "-OeX7DF0RX2z8uQQijQk": {
+      "-OeX7Ec_d2PioSgbOR-A": {
+        "content": "Alo babi",
+        "createdAt": 1763656661764,
+        "read": false,
+        "senderId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2"
+      },
+      "-OeX7aEEZ-bsa9jUcolU": {
+        "content": "alooo",
+        "createdAt": 1763656755595,
+        "read": false,
+        "senderId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2"
+      }
+    },
+    "-OeX9Tk4O8RqxU_wFMPo": {
+      "-OeX9VJb7XkTPpYEGBeV": {
+        "content": "hi Dung",
+        "createdAt": 1763657255300,
+        "read": false,
+        "senderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2"
+      }
+    },
+    "-OeXADeGwoXhi4eC7skZ": {
+      "-OeXAF1LYtIHN3FJ8yem": {
+        "content": "Gi",
+        "createdAt": 1763657449848,
+        "read": false,
+        "senderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33"
+      }
+    },
+    "-OeXBbyGh9z3I74kVK2m": {
+      "-OeXBdKJ_03I3BJF-Vts": {
+        "content": "hiiiiii",
+        "createdAt": 1763657815615,
+        "read": false,
+        "senderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33"
+      }
+    },
+    "-OeXCRrmboSySzsuIXvx": {
+      "-OeXCTGNV4rPKgjYXRTv": {
+        "content": "Hiii",
+        "createdAt": 1763658032744,
+        "read": false,
+        "senderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2"
+      }
+    },
+    "-OfYikTl0CJ-k9ExqR2I": {
+      "-OfYktZnFUFxXOv279AZ": {
+        "content": "hi",
+        "createdAt": 1764757838386,
+        "read": true,
+        "senderId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2"
+      },
+      "-OfYkzGFQQzMzF5qH5Qb": {
+        "content": "chào",
+        "createdAt": 1764757861808,
+        "read": true,
+        "senderId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+      },
+      "-OfYlMSDz2Bp2cFrbWF_": {
+        "content": "hihi",
+        "createdAt": 1764757960766,
+        "read": true,
+        "senderId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2"
+      },
+      "-OfYv7ttGnSzbsf9-yrg": {
+        "content": "hiii",
+        "createdAt": 1764760522748,
+        "read": false,
+        "senderId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+      },
+      "-OfYv9j3Q-XLS4KGxcXz": {
+        "content": "hi",
+        "createdAt": 1764760530163,
+        "read": true,
+        "senderId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2"
+      }
+    },
+    "-OfYw_H0hXuhoMLyFRfE": {
+      "-OfYwbPtKMYkdt4czfS1": {
+        "content": "hii",
+        "createdAt": 1764760909739,
+        "read": true,
+        "senderId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2"
+      },
+      "-OfZZAGJ7Ra6pDtNNu_u": {
+        "content": "Xin chào, tôi quan tâm đến \"test\"",
+        "createdAt": 1764771280260,
+        "productId": "-OfZYjakL-YWvGasQGFC",
+        "read": false,
+        "senderId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+      }
+    }
+  },
+  "notifications": {
+    "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+      "-OfYigp9hZkBz_wGaBK_": {
+        "createdAt": 1764757261899,
+        "fromUserId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2",
+        "fromUserName": "Long Quang",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocLn_ThubLaAq44AbKSFFGdXu0tR-NVGTWsOddLM7B_OTE3OyFI=s96-c",
+        "read": true,
+        "type": "friend_accept"
+      },
+      "-OfYwZeJRujaqqP1Cf7w": {
+        "createdAt": 1764760898418,
+        "fromUserId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "fromUserName": "Linh",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+        "read": true,
+        "type": "friend_request"
+      }
+    },
+    "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+      "-OfYdQawx9QnmgmIHc8U": {
+        "createdAt": 1764755880652,
+        "fromUserId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+        "fromUserName": "test",
+        "read": true,
+        "type": "friend_request"
+      },
+      "-OfYwImtN6zGtF8-DQQT": {
+        "createdAt": 1764760829350,
+        "fromUserId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "fromUserName": "Linh",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+        "read": false,
+        "type": "friend_request"
+      }
+    },
+    "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+      "-OeX6t6yLl9EL5h0aerX": {
+        "createdAt": 1763656570579,
+        "fromUserId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+        "message": "ok em",
+        "postId": "-OeX4Y3iVLW0JzlPGwWT",
+        "read": false,
+        "type": "comment"
+      }
+    },
+    "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+      "-OfYwSjsDZJJbt8HzFPo": {
+        "createdAt": 1764760870143,
+        "fromUserId": "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+        "fromUserName": "Long Quang",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c",
+        "read": true,
+        "type": "friend_request"
+      },
+      "-OfYwiVCr_Hr8ydGzceX": {
+        "createdAt": 1764760938764,
+        "fromUserId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+        "fromUserName": "test",
+        "read": false,
+        "type": "friend_accept"
+      }
+    },
+    "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+      "-OfYwUE8cCHR-2wwhNOq": {
+        "createdAt": 1764760876454,
+        "fromUserId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "fromUserName": "Linh",
+        "fromUserProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+        "read": false,
+        "type": "friend_accept"
+      }
+    }
+  },
+  "posts": {
+    "-OeX4Y3iVLW0JzlPGwWT": {
+      "commentCount": 2,
+      "comments": {
+        "-OeX4c31h_lUlLc7T9wm": {
+          "createdAt": 1763655975463,
+          "text": "Yêu Phúc vờ lờ",
+          "userId": "jMohLZs8dIXSpytTTNRf9xxKUDj2",
+          "userName": "Long Meo Meo"
+        },
+        "-OeX6sdFROeI0GMKcamr": {
+          "createdAt": 1763656568339,
+          "text": "ok em",
+          "userId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+          "userName": "Phúc deptrai"
+        }
+      },
+      "content": "Tôi yêu em",
+      "createdAt": 1763655954959,
+      "likes": {
+        "jMohLZs8dIXSpytTTNRf9xxKUDj2": true
+      },
+      "shareCount": 0,
+      "userId": "jMohLZs8dIXSpytTTNRf9xxKUDj2",
+      "userName": "Long Meo Meo"
+    },
+    "-OeX9AWN6ymdBp4euvVI": {
+      "commentCount": 0,
+      "content": "Hôm nay thật là một ngày tuyệt vời! 🌞",
+      "createdAt": 1763657170452,
+      "imageUrl": "https://picsum.photos/seed/7/400/300",
+      "likeCount": 0,
+      "shareCount": 0,
+      "userId": "vz4zvcP0Cade9Os3nhDoVpxp4VC3",
+      "userName": "Nguyễn Văn An",
+      "userProfileImage": "https://ui-avatars.com/api/?name=Nguy%E1%BB%85n%20V%C4%83n%20An&size=200&background=random"
+    },
+    "-OeX9AedGalPzUiD6s0v": {
+      "commentCount": 2,
+      "content": "Vừa xem một bộ phim hay lắm, các bạn nên xem thử!",
+      "createdAt": 1763657170920,
+      "likeCount": 3,
+      "likes": {
+        "imXIbnqooPdXXHf7MzXtGx8tbUT2": true,
+        "vz4zvcP0Cade9Os3nhDoVpxp4VC3": true
+      },
+      "shareCount": 1,
+      "userId": "imXIbnqooPdXXHf7MzXtGx8tbUT2",
+      "userName": "Trần Thị Bình",
+      "userProfileImage": "https://ui-avatars.com/api/?name=Tr%E1%BA%A7n%20Th%E1%BB%8B%20B%C3%ACnh&size=200&background=random"
+    },
+    "-OeX9AtEUdwZnxIYscVO": {
+      "commentCount": 4,
+      "comments": {
+        "-OfYW064hbNUsYiaN4E3": {
+          "createdAt": 1764753675113,
+          "text": "không",
+          "userId": "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+          "userName": "Long Quang",
+          "userProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c"
+        }
+      },
+      "content": "Cuối tuần này ai đi chơi không? 🎉",
+      "createdAt": 1763657171911,
+      "likeCount": 6,
+      "likes": {
+        "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": true,
+        "imXIbnqooPdXXHf7MzXtGx8tbUT2": true,
+        "tXkt5eoXnHbG4L1MsojKkHSJsZ43": true,
+        "vz4zvcP0Cade9Os3nhDoVpxp4VC3": true
+      },
+      "shareCount": 2,
+      "userId": "tXkt5eoXnHbG4L1MsojKkHSJsZ43",
+      "userName": "Lê Văn Cường",
+      "userProfileImage": "https://ui-avatars.com/api/?name=L%C3%AA%20V%C4%83n%20C%C6%B0%E1%BB%9Dng&size=200&background=random"
+    },
+    "-OeX9BHt4f36MCW0whUp": {
+      "commentCount": 6,
+      "content": "Công việc hôm nay mệt quá! 😴",
+      "createdAt": 1763657173553,
+      "imageUrl": "https://picsum.photos/seed/8/400/300",
+      "likeCount": 9,
+      "likes": {
+        "vz4zvcP0Cade9Os3nhDoVpxp4VC3": true
+      },
+      "shareCount": 3,
+      "userId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+      "userName": "Phạm Thị Dung",
+      "userProfileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+    },
+    "-OfYwoIAmku2Mtittfx9": {
+      "commentCount": 1,
+      "comments": {
+        "-OfZ-7GoiCtd1EK1Qhiw": {
+          "createdAt": 1764761830771,
+          "likes": {
+            "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": true
+          },
+          "text": "tôi tự cmt cho chính mìn",
+          "userId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+          "userName": "test"
+        },
+        "-OfZ-AGo2UeXv1djt7kM": {
+          "createdAt": 1764761843164,
+          "text": "ai iu m ?",
+          "userId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+          "userName": "Linh",
+          "userProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c"
+        }
+      },
+      "content": "Tôi yêu em",
+      "createdAt": 1764760962573,
+      "reactions": {
+        "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": "like"
+      },
+      "shareCount": 0,
+      "userId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+      "userName": "test"
+    },
+    "-OfZ-DMp6xD5INkY8rN3": {
+      "commentCount": 0,
+      "content": "không ??",
+      "createdAt": 1764761855832,
+      "shareCount": 0,
+      "sharedPostContent": "Tôi yêu em",
+      "sharedPostId": "-OfYwoIAmku2Mtittfx9",
+      "sharedPostUserId": "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13",
+      "sharedPostUserName": "test",
+      "userId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+      "userName": "Linh",
+      "userProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c"
+    }
+  },
+  "products": {
+    "-OfZYjakL-YWvGasQGFC": {
+      "category": "other",
+      "condition": "good",
+      "createdAt": 1764771166950,
+      "description": "test",
+      "price": 100000,
+      "sellerId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+      "sellerName": "Linh",
+      "sellerProfileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c",
+      "status": "available",
+      "title": "test",
+      "viewCount": 2
+    }
+  },
+  "userChats": {
+    "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+      "-OfYikTl0CJ-k9ExqR2I": {
+        "createdAt": 1764757277771,
+        "lastMessage": "hi",
+        "lastMessageSenderId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2",
+        "lastMessageTime": 1764760530755,
+        "participantInfo": {
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+            "name": "test"
+          },
+          "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+            "name": "Long Quang",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocLn_ThubLaAq44AbKSFFGdXu0tR-NVGTWsOddLM7B_OTE3OyFI=s96-c"
+          }
+        },
+        "participants": [
+          "6z3X9FSAAKfZwuYcwgxp6tsk0gf2",
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+        ],
+        "unreadCount": 0
+      },
+      "-OfYw_H0hXuhoMLyFRfE": {
+        "createdAt": 1764760902098,
+        "lastMessage": "hii",
+        "lastMessageSenderId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "lastMessageTime": 1764760910330,
+        "participantInfo": {
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+            "name": "test"
+          },
+          "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+            "name": "Linh",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c"
+          }
+        },
+        "participants": [
+          "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+      "-OeX9Tk4O8RqxU_wFMPo": {
+        "createdAt": 1763657249629,
+        "lastMessage": "hi Dung",
+        "lastMessageSenderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+        "lastMessageTime": 1763657256058,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33"
+        ],
+        "unreadCount": 1
+      },
+      "-OeXADeGwoXhi4eC7skZ": {
+        "createdAt": 1763657444727,
+        "lastMessage": "Gi",
+        "lastMessageSenderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+        "lastMessageTime": 1763657450107,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "imXIbnqooPdXXHf7MzXtGx8tbUT2": {
+            "name": "Trần Thị Bình",
+            "profileImage": "https://ui-avatars.com/api/?name=Tr%E1%BA%A7n%20Th%E1%BB%8B%20B%C3%ACnh&size=200&background=random"
+          }
+        },
+        "participants": [
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+          "imXIbnqooPdXXHf7MzXtGx8tbUT2"
+        ],
+        "unreadCount": 0
+      },
+      "-OeXBbyGh9z3I74kVK2m": {
+        "createdAt": 1763657810592,
+        "lastMessage": "hiiiiii",
+        "lastMessageSenderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+        "lastMessageTime": 1763657815907,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "vz4zvcP0Cade9Os3nhDoVpxp4VC3": {
+            "name": "Nguyễn Văn An",
+            "profileImage": "https://ui-avatars.com/api/?name=Nguy%E1%BB%85n%20V%C4%83n%20An&size=200&background=random"
+          }
+        },
+        "participants": [
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+          "vz4zvcP0Cade9Os3nhDoVpxp4VC3"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+      "-OfYikTl0CJ-k9ExqR2I": {
+        "createdAt": 1764757277464,
+        "lastMessage": "hi",
+        "lastMessageSenderId": "6z3X9FSAAKfZwuYcwgxp6tsk0gf2",
+        "lastMessageTime": 1764760530449,
+        "participantInfo": {
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+            "name": "test"
+          },
+          "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+            "name": "Long Quang",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocLn_ThubLaAq44AbKSFFGdXu0tR-NVGTWsOddLM7B_OTE3OyFI=s96-c"
+          }
+        },
+        "participants": [
+          "6z3X9FSAAKfZwuYcwgxp6tsk0gf2",
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+      "-OeX9Tk4O8RqxU_wFMPo": {
+        "createdAt": 1763657249356,
+        "lastMessage": "hi Dung",
+        "lastMessageSenderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+        "lastMessageTime": 1763657255814,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33"
+        ],
+        "unreadCount": 0
+      },
+      "-OeXCK3hBe9-qQxorfPW": {
+        "createdAt": 1763657995638,
+        "lastMessage": "",
+        "lastMessageSenderId": "",
+        "lastMessageTime": 1763657995638,
+        "participantInfo": {
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          },
+          "tXkt5eoXnHbG4L1MsojKkHSJsZ43": {
+            "name": "Lê Văn Cường",
+            "profileImage": "https://ui-avatars.com/api/?name=L%C3%AA%20V%C4%83n%20C%C6%B0%E1%BB%9Dng&size=200&background=random"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "tXkt5eoXnHbG4L1MsojKkHSJsZ43"
+        ]
+      },
+      "-OeXCRrmboSySzsuIXvx": {
+        "createdAt": 1763658027576,
+        "lastMessage": "Hiii",
+        "lastMessageSenderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+        "lastMessageTime": 1763658033729,
+        "participantInfo": {
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          },
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+            "name": "Long Meo Meo"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "eAJQQd4FACdjLkG1EIHl9ERVQRQ2": {
+      "-OeX7DF0RX2z8uQQijQk": {
+        "createdAt": 1763656656597,
+        "lastMessage": "alooo",
+        "lastMessageSenderId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+        "lastMessageTime": 1763656756219,
+        "participantInfo": {
+          "eAJQQd4FACdjLkG1EIHl9ERVQRQ2": {
+            "name": "Phúc deptrai"
+          },
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+            "name": "Long Meo Meo"
+          }
+        },
+        "participants": [
+          "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "imXIbnqooPdXXHf7MzXtGx8tbUT2": {
+      "-OeXADeGwoXhi4eC7skZ": {
+        "createdAt": 1763657445052,
+        "lastMessage": "Gi",
+        "lastMessageSenderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+        "lastMessageTime": 1763657450405,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "imXIbnqooPdXXHf7MzXtGx8tbUT2": {
+            "name": "Trần Thị Bình",
+            "profileImage": "https://ui-avatars.com/api/?name=Tr%E1%BA%A7n%20Th%E1%BB%8B%20B%C3%ACnh&size=200&background=random"
+          }
+        },
+        "participants": [
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+          "imXIbnqooPdXXHf7MzXtGx8tbUT2"
+        ],
+        "unreadCount": 1
+      }
+    },
+    "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+      "-OeX7DF0RX2z8uQQijQk": {
+        "createdAt": 1763656656921,
+        "lastMessage": "alooo",
+        "lastMessageSenderId": "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+        "lastMessageTime": 1763656756590,
+        "participantInfo": {
+          "eAJQQd4FACdjLkG1EIHl9ERVQRQ2": {
+            "name": "Phúc deptrai"
+          },
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+            "name": "Long Meo Meo"
+          }
+        },
+        "participants": [
+          "eAJQQd4FACdjLkG1EIHl9ERVQRQ2",
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2"
+        ],
+        "unreadCount": 2
+      },
+      "-OeXCRrmboSySzsuIXvx": {
+        "createdAt": 1763658027845,
+        "lastMessage": "Hiii",
+        "lastMessageSenderId": "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+        "lastMessageTime": 1763658034075,
+        "participantInfo": {
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          },
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+            "name": "Long Meo Meo"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2"
+        ],
+        "unreadCount": 1
+      }
+    },
+    "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+      "-OfYw_H0hXuhoMLyFRfE": {
+        "createdAt": 1764760901794,
+        "lastMessage": "hii",
+        "lastMessageSenderId": "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+        "lastMessageTime": 1764760910027,
+        "participantInfo": {
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+            "name": "test"
+          },
+          "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+            "name": "Linh",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c"
+          }
+        },
+        "participants": [
+          "jlXmArcinqgySr5Ja14dkxI4ZxJ2",
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+        ],
+        "unreadCount": 0
+      }
+    },
+    "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+      "-OfYVtYWcKr3N35dJdr-": {
+        "createdAt": 1764753644886,
+        "lastMessage": "",
+        "lastMessageSenderId": "",
+        "lastMessageTime": 1764753644886,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+            "name": "Long Quang",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c"
+          }
+        },
+        "participants": [
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33"
+        ]
+      },
+      "-OfYW8toDsTx4B5pvF5c": {
+        "createdAt": 1764753712073,
+        "lastMessage": "",
+        "lastMessageSenderId": "",
+        "lastMessageTime": 1764753712073,
+        "participantInfo": {
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+            "name": "Long Meo Meo"
+          },
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+            "name": "Long Quang",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c"
+          }
+        },
+        "participants": [
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+          "jMohLZs8dIXSpytTTNRf9xxKUDj2"
+        ]
+      },
+      "-OfYakQJMPgAaMs8jK3_": {
+        "createdAt": 1764755180379,
+        "lastMessage": "",
+        "lastMessageSenderId": "",
+        "lastMessageTime": 1764755180379,
+        "participantInfo": {
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+            "name": "test"
+          },
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+            "name": "Long Quang",
+            "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c"
+          }
+        },
+        "participants": [
+          "nPvWvcEduzRcHC7PLaGhTpatOIj1",
+          "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13"
+        ]
+      }
+    },
+    "tXkt5eoXnHbG4L1MsojKkHSJsZ43": {
+      "-OeXCK3hBe9-qQxorfPW": {
+        "createdAt": 1763657995934,
+        "lastMessage": "",
+        "lastMessageSenderId": "",
+        "lastMessageTime": 1763657995934,
+        "participantInfo": {
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+            "name": "Phan Thị Mai",
+            "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+          },
+          "tXkt5eoXnHbG4L1MsojKkHSJsZ43": {
+            "name": "Lê Văn Cường",
+            "profileImage": "https://ui-avatars.com/api/?name=L%C3%AA%20V%C4%83n%20C%C6%B0%E1%BB%9Dng&size=200&background=random"
+          }
+        },
+        "participants": [
+          "ddjFmANgDmZn2mBVcRgHbp2tTIs2",
+          "tXkt5eoXnHbG4L1MsojKkHSJsZ43"
+        ]
+      }
+    },
+    "vz4zvcP0Cade9Os3nhDoVpxp4VC3": {
+      "-OeXBbyGh9z3I74kVK2m": {
+        "createdAt": 1763657810875,
+        "lastMessage": "hiiiiii",
+        "lastMessageSenderId": "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+        "lastMessageTime": 1763657816271,
+        "participantInfo": {
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+            "name": "Phạm Thị Dung",
+            "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+          },
+          "vz4zvcP0Cade9Os3nhDoVpxp4VC3": {
+            "name": "Nguyễn Văn An",
+            "profileImage": "https://ui-avatars.com/api/?name=Nguy%E1%BB%85n%20V%C4%83n%20An&size=200&background=random"
+          }
+        },
+        "participants": [
+          "5DjMQDWiAhaxNp5VAYKLVpfZ9X33",
+          "vz4zvcP0Cade9Os3nhDoVpxp4VC3"
+        ],
+        "unreadCount": 1
+      }
+    }
+  },
+  "users": {
+    "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": {
+      "createdAt": 1764754214446,
+      "email": "test@socialhome.com",
+      "friends": {
+        "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": true,
+        "jlXmArcinqgySr5Ja14dkxI4ZxJ2": true
+      },
+      "isOnline": false,
+      "lastSeen": 1764760741937,
+      "name": "test"
+    },
+    "5DjMQDWiAhaxNp5VAYKLVpfZ9X33": {
+      "bio": "Xin chào! Tôi là Phạm Thị Dung",
+      "createdAt": 1763657157400,
+      "email": "dung@socialhome.com",
+      "isOnline": false,
+      "lastSeen": 1763657932839,
+      "name": "Phạm Thị Dung",
+      "profileImage": "https://ui-avatars.com/api/?name=Ph%E1%BA%A1m%20Th%E1%BB%8B%20Dung&size=200&background=random"
+    },
+    "6FFMbUeb0oOaANcNcSKTFsf5B1O2": {
+      "bio": "Xin chào! Tôi là Trịnh Thị Kim",
+      "createdAt": 1763657166779,
+      "email": "kim@socialhome.com",
+      "isOnline": false,
+      "name": "Trịnh Thị Kim",
+      "profileImage": "https://ui-avatars.com/api/?name=Tr%E1%BB%8Bnh%20Th%E1%BB%8B%20Kim&size=200&background=random"
+    },
+    "6z3X9FSAAKfZwuYcwgxp6tsk0gf2": {
+      "createdAt": 1764755873036,
+      "email": "quanglong.3824@gmail.com",
+      "friends": {
+        "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": true
+      },
+      "isOnline": false,
+      "lastSeen": 1764760765785,
+      "name": "Long Quang",
+      "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocLn_ThubLaAq44AbKSFFGdXu0tR-NVGTWsOddLM7B_OTE3OyFI=s96-c"
+    },
+    "Fn9GmBl5aNOyYf7Z2vuMEGCLN1O2": {
+      "bio": "Xin chào! Tôi là Vũ Thị Phương",
+      "createdAt": 1763657160439,
+      "email": "phuong@socialhome.com",
+      "isOnline": false,
+      "name": "Vũ Thị Phương",
+      "profileImage": "https://ui-avatars.com/api/?name=V%C5%A9%20Th%E1%BB%8B%20Ph%C6%B0%C6%A1ng&size=200&background=random"
+    },
+    "GWFCA6zHXjSzs4nz3lyFatsnnYd2": {
+      "bio": "Xin chào! Tôi là Hoàng Văn Em",
+      "createdAt": 1763657159074,
+      "email": "em@socialhome.com",
+      "isOnline": false,
+      "name": "Hoàng Văn Em",
+      "profileImage": "https://ui-avatars.com/api/?name=Ho%C3%A0ng%20V%C4%83n%20Em&size=200&background=random"
+    },
+    "IlD2cgGBzpVbTxQPIZKbN9bwVeO2": {
+      "bio": "Xin chào! Tôi là Lý Văn Long",
+      "createdAt": 1763657168267,
+      "email": "long@socialhome.com",
+      "isOnline": false,
+      "name": "Lý Văn Long",
+      "profileImage": "https://ui-avatars.com/api/?name=L%C3%BD%20V%C4%83n%20Long&size=200&background=random"
+    },
+    "ddjFmANgDmZn2mBVcRgHbp2tTIs2": {
+      "bio": "Xin chào! Tôi là Phan Thị Mai",
+      "createdAt": 1763657169812,
+      "email": "mai@socialhome.com",
+      "isOnline": false,
+      "lastSeen": 1763657292211,
+      "name": "Phan Thị Mai",
+      "profileImage": "https://ui-avatars.com/api/?name=Phan%20Th%E1%BB%8B%20Mai&size=200&background=random"
+    },
+    "eAJQQd4FACdjLkG1EIHl9ERVQRQ2": {
+      "createdAt": 1763656088861,
+      "email": "phucdeptrap@socialhome.com",
+      "isOnline": false,
+      "lastSeen": 1763656772088,
+      "name": "Phúc deptrai"
+    },
+    "funJn5o4ToTNIMgfrbEQ3jUhJrl1": {
+      "bio": "Xin chào! Tôi là Đặng Văn Giang",
+      "createdAt": 1763657161777,
+      "email": "giang@socialhome.com",
+      "isOnline": false,
+      "name": "Đặng Văn Giang",
+      "profileImage": "https://ui-avatars.com/api/?name=%C4%90%E1%BA%B7ng%20V%C4%83n%20Giang&size=200&background=random"
+    },
+    "imXIbnqooPdXXHf7MzXtGx8tbUT2": {
+      "bio": "Xin chào! Tôi là Trần Thị Bình",
+      "createdAt": 1763657153860,
+      "email": "binh@socialhome.com",
+      "isOnline": false,
+      "name": "Trần Thị Bình",
+      "profileImage": "https://ui-avatars.com/api/?name=Tr%E1%BA%A7n%20Th%E1%BB%8B%20B%C3%ACnh&size=200&background=random"
+    },
+    "jMohLZs8dIXSpytTTNRf9xxKUDj2": {
+      "createdAt": 1763655440443,
+      "email": "longmeo@socialhome.com",
+      "isOnline": false,
+      "lastSeen": 1763656059497,
+      "name": "Long Meo Meo"
+    },
+    "jlXmArcinqgySr5Ja14dkxI4ZxJ2": {
+      "createdAt": 1764760804949,
+      "email": "thuylinh.80902@gmail.com",
+      "friends": {
+        "1GTmfZ5FDzMdUnhjKmCQ7gVcaF13": true,
+        "nPvWvcEduzRcHC7PLaGhTpatOIj1": true
+      },
+      "isOnline": true,
+      "lastSeen": 1764821294836,
+      "name": "Linh",
+      "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJWKgoXi3sCsEKJ4XKQcYaKv251QhkqcsNz2k6znBdFUE6dSQ=s96-c"
+    },
+    "nPvWvcEduzRcHC7PLaGhTpatOIj1": {
+      "createdAt": 1764753625654,
+      "email": "longdev.08@gmail.com",
+      "friends": {
+        "jlXmArcinqgySr5Ja14dkxI4ZxJ2": true
+      },
+      "isOnline": false,
+      "lastSeen": 1764760918532,
+      "name": "Long Quang",
+      "profileImage": "https://lh3.googleusercontent.com/a/ACg8ocJQsNS68y6f20vdimP4mRmGe3U-tMausEPGmo6q43KETsFjB9ju=s96-c"
+    },
+    "tXkt5eoXnHbG4L1MsojKkHSJsZ43": {
+      "bio": "Xin chào! Tôi là Lê Văn Cường",
+      "createdAt": 1763657155457,
+      "email": "cuong@socialhome.com",
+      "isOnline": false,
+      "name": "Lê Văn Cường",
+      "profileImage": "https://ui-avatars.com/api/?name=L%C3%AA%20V%C4%83n%20C%C6%B0%E1%BB%9Dng&size=200&background=random"
+    },
+    "vk7NDX8lTZXYg8xXh9UFGasc3Eg2": {
+      "bio": "Xin chào! Tôi là Ngô Văn Inh",
+      "createdAt": 1763657164876,
+      "email": "inh@socialhome.com",
+      "isOnline": false,
+      "name": "Ngô Văn Inh",
+      "profileImage": "https://ui-avatars.com/api/?name=Ng%C3%B4%20V%C4%83n%20Inh&size=200&background=random"
+    },
+    "vz4zvcP0Cade9Os3nhDoVpxp4VC3": {
+      "bio": "Xin chào! Tôi là Nguyễn Văn An",
+      "createdAt": 1763657152043,
+      "email": "an@socialhome.com",
+      "isOnline": false,
+      "name": "Nguyễn Văn An",
+      "profileImage": "https://ui-avatars.com/api/?name=Nguy%E1%BB%85n%20V%C4%83n%20An&size=200&background=random"
+    },
+    "waKxEuk8p2WQGPeVkH94NQviqp12": {
+      "bio": "Xin chào! Tôi là Bùi Thị Hoa",
+      "createdAt": 1763657163327,
+      "email": "hoa@socialhome.com",
+      "isOnline": false,
+      "name": "Bùi Thị Hoa",
+      "profileImage": "https://ui-avatars.com/api/?name=B%C3%B9i%20Th%E1%BB%8B%20Hoa&size=200&background=random"
+    }
+  }
+}

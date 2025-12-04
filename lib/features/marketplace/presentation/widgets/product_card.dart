@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../domain/entities/product_entity.dart';
 import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:clone_social/core/animations/app_animations.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final ProductEntity product;
   final VoidCallback? onTap;
   final VoidCallback? onSave;
@@ -18,6 +19,32 @@ class ProductCard extends StatelessWidget {
     this.isSaved = false,
   });
 
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: AppDurations.fast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   String _formatPrice(double price) {
     final formatter = NumberFormat('#,###', 'vi_VN');
     return '${formatter.format(price)} đ';
@@ -25,13 +52,20 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        widget.onTap?.call();
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Product image
@@ -40,32 +74,40 @@ class ProductCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  product.images.isNotEmpty
-                      ? _buildProductImage(product.images.first)
+                  widget.product.images.isNotEmpty
+                      ? _buildProductImage(widget.product.images.first)
                       : _buildPlaceholder(),
                   // Save button
-                  if (onSave != null)
+                  if (widget.onSave != null)
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: GestureDetector(
-                        onTap: onSave,
-                        child: Container(
+                      child: TapScale(
+                        onTap: widget.onSave,
+                        child: AnimatedContainer(
+                          duration: AppDurations.fast,
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.9),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            isSaved ? Icons.bookmark : Icons.bookmark_border,
-                            size: 20,
-                            color: isSaved ? AppTheme.primaryBlue : Colors.grey[700],
+                          child: AnimatedSwitcher(
+                            duration: AppDurations.fast,
+                            transitionBuilder: (child, animation) {
+                              return ScaleTransition(scale: animation, child: child);
+                            },
+                            child: Icon(
+                              widget.isSaved ? Icons.bookmark : Icons.bookmark_border,
+                              key: ValueKey(widget.isSaved),
+                              size: 20,
+                              color: widget.isSaved ? AppTheme.primaryBlue : Colors.grey[700],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   // Sold badge
-                  if (product.status == ProductStatus.sold)
+                  if (widget.product.status == ProductStatus.sold)
                     Positioned.fill(
                       child: Container(
                         color: Colors.black54,
@@ -93,7 +135,7 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _formatPrice(product.price),
+                      _formatPrice(widget.product.price),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -103,20 +145,20 @@ class ProductCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Expanded(
                       child: Text(
-                        product.title,
+                        widget.product.title,
                         style: const TextStyle(fontSize: 13),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    if (product.location != null)
+                    if (widget.product.location != null)
                       Row(
                         children: [
                           Icon(Icons.location_on, size: 12, color: Colors.grey[600]),
                           const SizedBox(width: 2),
                           Expanded(
                             child: Text(
-                              product.location!,
+                              widget.product.location!,
                               style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -131,6 +173,7 @@ class ProductCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 

@@ -6,6 +6,8 @@ import 'package:clone_social/features/chat/presentation/providers/chat_provider.
 import 'package:clone_social/features/chat/domain/entities/chat_entity.dart';
 import 'package:clone_social/features/auth/presentation/providers/auth_provider.dart';
 import 'package:clone_social/core/themes/app_theme.dart';
+import 'package:clone_social/core/animations/app_animations.dart';
+import 'package:clone_social/core/widgets/shimmer_loading.dart';
 
 class ChatListPage extends StatefulWidget {
   const ChatListPage({super.key});
@@ -14,25 +16,38 @@ class ChatListPage extends StatefulWidget {
   State<ChatListPage> createState() => _ChatListPageState();
 }
 
-class _ChatListPageState extends State<ChatListPage> {
+class _ChatListPageState extends State<ChatListPage> with SingleTickerProviderStateMixin {
   bool _isSearching = false;
   final _searchController = TextEditingController();
   List<ChatEntity> _filteredChats = [];
+  late AnimationController _fabController;
+  late Animation<double> _fabAnimation;
 
   @override
   void initState() {
     super.initState();
+    _fabController = AnimationController(
+      duration: AppDurations.slow,
+      vsync: this,
+    );
+    _fabAnimation = CurvedAnimation(
+      parent: _fabController,
+      curve: AppCurves.spring,
+    );
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final currentUser = context.read<AuthProvider>().currentUser;
       if (currentUser != null) {
         context.read<ChatProvider>().init(currentUser.id);
       }
+      _fabController.forward();
     });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _fabController.dispose();
     super.dispose();
   }
 
@@ -146,47 +161,67 @@ class _ChatListPageState extends State<ChatListPage> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showNewChatDialog(currentUser.id),
-        backgroundColor: AppTheme.primaryBlue,
-        child: const Icon(Icons.edit, color: Colors.white),
+      floatingActionButton: ScaleTransition(
+        scale: _fabAnimation,
+        child: FloatingActionButton(
+          onPressed: () => _showNewChatDialog(currentUser.id),
+          backgroundColor: AppTheme.primaryBlue,
+          child: const Icon(Icons.edit, color: Colors.white),
+        ),
       ),
       body: chatProvider.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) => const ChatShimmer(),
+            )
           : displayChats.isEmpty
               ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        _isSearching ? Icons.search_off : Icons.chat_bubble_outline,
-                        size: 64,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        _isSearching ? 'Không tìm thấy kết quả' : 'Chưa có cuộc trò chuyện',
-                        style: const TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _isSearching 
-                            ? 'Thử từ khóa khác'
-                            : 'Bắt đầu trò chuyện với bạn bè',
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                      if (!_isSearching) ...[
-                        const SizedBox(height: 24),
-                        ElevatedButton.icon(
-                          onPressed: () => context.push('/friends'),
-                          icon: const Icon(Icons.person_add),
-                          label: const Text('Tìm bạn bè'),
+                  child: SlideIn.fromBottom(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ScaleIn(
+                          child: Icon(
+                            _isSearching ? Icons.search_off : Icons.chat_bubble_outline,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
                         ),
+                        const SizedBox(height: 16),
+                        FadeIn(
+                          delay: const Duration(milliseconds: 100),
+                          child: Text(
+                            _isSearching ? 'Không tìm thấy kết quả' : 'Chưa có cuộc trò chuyện',
+                            style: const TextStyle(fontSize: 18, color: Colors.grey),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        FadeIn(
+                          delay: const Duration(milliseconds: 150),
+                          child: Text(
+                            _isSearching 
+                                ? 'Thử từ khóa khác'
+                                : 'Bắt đầu trò chuyện với bạn bè',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                        if (!_isSearching) ...[
+                          const SizedBox(height: 24),
+                          SlideIn.fromBottom(
+                            delay: const Duration(milliseconds: 200),
+                            child: ElevatedButton.icon(
+                              onPressed: () => context.push('/friends'),
+                              icon: const Icon(Icons.person_add),
+                              label: const Text('Tìm bạn bè'),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 )
               : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
                   itemCount: displayChats.length,
                   itemBuilder: (context, index) {
                     final chat = displayChats[index];
@@ -198,7 +233,9 @@ class _ChatListPageState extends State<ChatListPage> {
                     final otherUserName = otherUserInfo['name'] ?? 'Unknown';
                     final otherUserImage = otherUserInfo['profileImage'];
 
-                    return Dismissible(
+                    return AnimatedListItem(
+                      index: index,
+                      child: Dismissible(
                       key: Key(chat.id),
                       direction: DismissDirection.endToStart,
                       background: Container(
@@ -316,6 +353,7 @@ class _ChatListPageState extends State<ChatListPage> {
                         ),
                         onLongPress: () => _showChatOptions(chat, currentUser.id),
                       ),
+                    ),
                     );
                   },
                 ),

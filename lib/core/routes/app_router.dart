@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/main_layout.dart';
+import '../animations/app_animations.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
@@ -23,6 +25,37 @@ import '../../features/marketplace/presentation/pages/my_products_page.dart';
 import '../../features/marketplace/presentation/pages/saved_products_page.dart';
 import '../../features/marketplace/presentation/pages/search_products_page.dart';
 import '../../features/menu/presentation/pages/menu_page.dart';
+
+/// Custom page transition for smooth navigation
+CustomTransitionPage<T> _buildPageWithTransition<T>({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: AppDurations.pageTransition,
+    reverseTransitionDuration: AppDurations.normal,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final curvedAnimation = CurvedAnimation(
+        parent: animation,
+        curve: AppCurves.smooth,
+      );
+      
+      return FadeTransition(
+        opacity: curvedAnimation,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0.03, 0),
+            end: Offset.zero,
+          ).animate(curvedAnimation),
+          child: child,
+        ),
+      );
+    },
+  );
+}
 
 class AppRouter {
   static GoRouter createRouter(AuthProvider authProvider) {
